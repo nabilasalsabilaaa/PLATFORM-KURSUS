@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->text('description')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            
-            $table->foreignId('teacher_id')->contrained('users')->cascadeOnDelete();
-            $table->foreignId('category_id')->nullable()->contrained()->nullOnDelete();
+
+            // FOREIGN KE USERS (teacher)
+            $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
+
+            // FOREIGN KE CATEGORIES (category)
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamps();
         });

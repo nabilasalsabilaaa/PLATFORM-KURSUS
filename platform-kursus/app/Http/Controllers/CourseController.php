@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -100,7 +101,7 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course)
     {
         //
     }
@@ -108,24 +109,87 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Course $course)
     {
-        //
+        $user = Auth::user();
+
+    // Teacher hanya boleh edit miliknya
+    if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
+        abort(403, 'You are not allowed to edit this course.');
+    }
+
+    // Ambil semua kategori
+    $categories = Category::orderBy('name')->get();
+
+    $teachers = [];
+    if ($user->role === 'admin') {
+        $teachers = User::where('role', 'teacher')->orderBy('name')->get();
+    }
+
+    return view('courses.edit', compact('course', 'user', 'categories', 'teachers'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Course $course)
     {
-        //
+        $user = Auth::user();
+
+        if (!in_array($user->role, ['admin','teacher'])) {
+            abort(403);
+        }
+
+        // Teacher hanya boleh edit course yang dia buat
+        if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
+            abort(403, 'You cannot update this course.');
+        }
+
+        $rules = [
+            'title'       => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'start_date'  => ['nullable', 'date'],
+            'end_date'    => ['nullable', 'date', 'after_or_equal:start_date'],
+            'status'      => ['required', 'in:active,inactive'],
+            'category_id' => ['nullable', 'exists:categories,id'],
+        ];
+
+        // admin bisa ganti teacher
+        if ($user->role === 'admin') {
+            $rules['teacher_id'] = ['required', 'exists:users,id'];
+        }
+
+        $validated = $request->validate($rules);
+
+        // teacher tidak boleh ganti teacher_id
+        if ($user->role === 'teacher') {
+            $validated['teacher_id'] = $user->id;
+        }
+
+        $course->update($validated);
+
+        return redirect()->route('courses.index')
+            ->with('success', 'Course updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
-        //
+        $user = Auth::user();
+
+        if (!in_array($user->role, ['admin','teacher'])) {
+            abort(403);
+        }
+
+        if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
+            abort(403, 'You cannot delete a course you do not own.');
+        }
+
+        $course->delete();
+
+        return redirect()->route('courses.index')
+        ->with('success', 'Course deleted successfully.');
     }
 }
