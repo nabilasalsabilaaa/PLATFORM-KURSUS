@@ -65,4 +65,11 @@ class User extends Authenticatable
                     ->withPivot('is_done', 'done_at')
                     ->withTimestamps();
     }
+
+    public function completedLessons()
+    {
+        return $this->belongsToMany(\App\Models\Content::class, 'lesson_user')
+                    ->withTimestamps();
+    }
+
 }

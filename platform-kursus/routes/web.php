@@ -8,6 +8,7 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\PublicCourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\StudentProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -86,5 +87,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 
     Route::post('/courses/{course}/lessons/{content}/done', [LessonController::class, 'markAsDone'])
         ->name('lessons.done');
-
 });
+
+Route::middleware(['auth','role:student'])
+    ->get('/profile/student', [StudentProfileController::class, 'index'])
+    ->name('profile.student');
