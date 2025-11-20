@@ -10,4 +10,13 @@ class Content extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'content_user')
+                    ->withPivot('is_done', 'done_at')
+                    ->withTimestamps();
+    }
+
+    
 }

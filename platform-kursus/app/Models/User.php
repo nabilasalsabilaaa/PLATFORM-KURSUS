@@ -59,4 +59,10 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    public function learnedContents()
+    {
+        return $this->belongsToMany(Content::class, 'content_user')
+                    ->withPivot('is_done', 'done_at')
+                    ->withTimestamps();
+    }
 }

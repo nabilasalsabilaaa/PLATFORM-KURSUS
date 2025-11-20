@@ -1,13 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContentController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicCourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\LessonController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -78,3 +78,13 @@ Route::middleware(['auth', 'role:student'])->group(function () {
         ->name('courses.unenroll');
 });
 
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+
+    Route::get('/courses/{course}/lessons/{content}', [LessonController::class, 'show'])
+        ->name('lessons.show');
+
+    Route::post('/courses/{course}/lessons/{content}/done', [LessonController::class, 'markAsDone'])
+        ->name('lessons.done');
+
+});
