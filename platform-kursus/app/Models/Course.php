@@ -30,4 +30,10 @@ class Course extends Model
         return $this->hasMany(Content::class)->orderBy('order');
     }
 
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_user')
+                    ->withTimestamps();
+    }
+
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicCourseController;
+use App\Http\Controllers\EnrollmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,3 +58,23 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])
+        ->name('courses.enroll');
+
+    Route::delete('/courses/{course}/enroll', [EnrollmentController::class, 'destroy'])
+        ->name('courses.unenroll');
+});
+
+Route::get('/courses/catalog', [PublicCourseController::class, 'index'])
+    ->name('courses.catalog');
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])
+        ->name('courses.enroll');
+
+    Route::delete('/courses/{course}/enroll', [EnrollmentController::class, 'destroy'])
+        ->name('courses.unenroll');
+});
+

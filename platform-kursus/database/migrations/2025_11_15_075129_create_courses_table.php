@@ -18,13 +18,8 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-
-            // FOREIGN KE USERS (teacher)
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
-
-            // FOREIGN KE CATEGORIES (category)
             $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
-
             $table->timestamps();
         });
     }

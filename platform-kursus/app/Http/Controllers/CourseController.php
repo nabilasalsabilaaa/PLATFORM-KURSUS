@@ -43,16 +43,11 @@ class CourseController extends Controller
     public function create()
     {
         $user = Auth::user();
-
-        // hanya admin & teacher yang boleh bikin course
         if (!in_array($user->role, ['admin', 'teacher'])) {
             abort(403, 'You are not allowed to create courses.');
         }
 
-        // kalau admin, boleh pilih teacher dari dropdown
-        // kalau teacher biasa, dia hanya pakai dirinya sendiri
         $teachers = [];
-
         if ($user->role === 'admin') {
             $teachers = User::where('role', 'teacher')->orderBy('name')->get();
         }
@@ -71,7 +66,6 @@ class CourseController extends Controller
             abort(403, 'You are not allowed to create courses.');
         }
 
-        // Validasi
         $rules = [
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -80,14 +74,11 @@ class CourseController extends Controller
             'status'      => ['required', 'in:active,inactive'],
         ];
 
-        // kalau admin, dia bisa pilih teacher_id dari form
         if ($user->role === 'admin') {
             $rules['teacher_id'] = ['required', 'exists:users,id'];
         }
 
         $validated = $request->validate($rules);
-
-        // jika role = teacher, pakai id diri sendiri sebagai teacher_id
         if ($user->role === 'teacher') {
             $validated['teacher_id'] = $user->id;
         }
@@ -113,12 +104,10 @@ class CourseController extends Controller
     {
         $user = Auth::user();
 
-    // Teacher hanya boleh edit miliknya
     if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
         abort(403, 'You are not allowed to edit this course.');
     }
 
-    // Ambil semua kategori
     $categories = Category::orderBy('name')->get();
 
     $teachers = [];
@@ -140,7 +129,6 @@ class CourseController extends Controller
             abort(403);
         }
 
-        // Teacher hanya boleh edit course yang dia buat
         if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
             abort(403, 'You cannot update this course.');
         }
@@ -154,14 +142,12 @@ class CourseController extends Controller
             'category_id' => ['nullable', 'exists:categories,id'],
         ];
 
-        // admin bisa ganti teacher
         if ($user->role === 'admin') {
             $rules['teacher_id'] = ['required', 'exists:users,id'];
         }
 
         $validated = $request->validate($rules);
 
-        // teacher tidak boleh ganti teacher_id
         if ($user->role === 'teacher') {
             $validated['teacher_id'] = $user->id;
         }
