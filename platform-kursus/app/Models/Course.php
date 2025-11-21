@@ -36,4 +36,5 @@ class Course extends Model
                     ->withTimestamps();
     }
 
+
 }

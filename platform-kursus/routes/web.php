@@ -9,6 +9,7 @@ use App\Http\Controllers\PublicCourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\TeacherProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -92,3 +93,9 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::middleware(['auth','role:student'])
     ->get('/profile/student', [StudentProfileController::class, 'index'])
     ->name('profile.student');
+
+
+
+Route::middleware(['auth', 'role:teacher'])
+    ->get('/profile/teacher', [TeacherProfileController::class, 'index'])
+    ->name('profile.teacher');
