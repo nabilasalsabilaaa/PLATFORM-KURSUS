@@ -68,7 +68,8 @@ class User extends Authenticatable
 
     public function completedLessons()
     {
-        return $this->belongsToMany(\App\Models\Content::class, 'lesson_user')
+        return $this->belongsToMany(\App\Models\Content::class, 'content_user')
+                    ->withPivot('is_done', 'done_at')
                     ->withTimestamps();
     }
 
