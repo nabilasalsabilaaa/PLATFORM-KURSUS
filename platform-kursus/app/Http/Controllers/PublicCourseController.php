@@ -10,8 +10,9 @@ class PublicCourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $courses = Course::with('teacher')
             ->where('status', 'active')
             ->latest()
