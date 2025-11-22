@@ -1,96 +1,64 @@
 @extends('layouts.app')
-@section('header')
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Course Catalog') }}
-    </h2>
-@endsection
 
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session('success'))
-                <div class="mb-4 text-green-600">
-                    {{ session('success') }}
-                </div>
-            @endif
+<h1>Course Catalog</h1>
 
-            @if (session('error'))
-                <div class="mb-4 text-red-600">
-                    {{ session('error') }}
-                </div>
-            @endif
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h3 class="text-lg font-semibold mb-4">All Active Courses</h3>
+<form method="GET" action="{{ route('courses.catalog') }}" style="margin-bottom: 20px;">
+    <input type="text" name="search" placeholder="Search courses..."
+        value="{{ $search }}" style="padding: 5px; width: 200px;">
 
-                @forelse ($courses as $course)
-                    <div class="border-b py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <div>
-                            <h4 class="font-semibold text-gray-800">
-                                {{ $course->title }}
-                            </h4>
+    <select name="category" style="padding: 5px;">
+        <option value="">-- All Categories --</option>
+        @foreach ($categories as $cat)
+            <option value="{{ $cat->id }}" 
+                {{ $categoryId == $cat->id ? 'selected' : '' }}>
+                {{ $cat->name }}
+            </option>
+        @endforeach
+    </select>
 
-                            <p class="text-sm text-gray-600">
-                                Teacher:
-                                {{ $course->teacher?->name ?? '-' }}
-                                ({{ $course->teacher?->email ?? 'no email' }})
-                            </p>
+    <button type="submit" style="padding: 5px 10px;">
+        Filter
+    </button>
+</form>
 
-                            <p class="text-sm text-gray-600 mt-1">
-                                {{ \Illuminate\Support\Str::limit($course->description, 100) }}
-                            </p>
-                        </div>
+<table border="1" cellpadding="6" cellspacing="0" style="width: 100%;">
+    <tr>
+        <th>Course</th>
+        <th>Teacher</th>
+        <th>Category</th>
+        <th>Actions</th>
+    </tr>
 
-                        <div class="flex flex-col items-start sm:items-end gap-2">
-                            @if ($course->teacher?->email)
-                                <a href="mailto:{{ $course->teacher->email }}"
-                                class="px-3 py-1 text-xs rounded bg-gray-100 text-gray-800">
-                                    Hubungi Teacher
-                                </a>
-                            @endif
+    @forelse ($courses as $course)
+        <tr>
+            <td>{{ $course->title }}</td>
+            <td>{{ $course->teacher->name }}</td>
+            <td>{{ $course->category->name ?? '-' }}</td>
+            <td>
+                <a href="mailto:{{ $course->teacher->email }}">Hubungi Teacher</a>
 
-                            @php
-                                $user = auth()->user();
-                                $isStudent = $user && $user->role === 'student';
-                                $isEnrolled = $isStudent
-                                    ? $user->enrolledCourses->contains($course->id)
-                                    : false;
-                            @endphp
+                @auth
+                    @if (Auth::user()->role === 'student')
+                        <form action="{{ route('courses.enroll', $course->id) }}" 
+                            method="POST" style="display:inline;">
+                            @csrf
+                            <button>Follow Course</button>
+                        </form>
+                    @endif
+                @endauth
 
-                            @if ($isStudent)
-                                @if ($isEnrolled)
-                                    <form action="{{ route('courses.unenroll', $course) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                                class="px-3 py-1 text-xs rounded bg-gray-200 text-gray-800">
-                                            Unenroll
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('courses.enroll', $course) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                                class="px-3 py-1 text-xs rounded bg-indigo-600 text-white">
-                                            Enroll
-                                        </button>
-                                    </form>
-                                @endif
-                            @else
-                                <p class="text-xs text-gray-500">
-                                    Login sebagai student untuk ikut course.
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-gray-500">
-                        No active courses available.
-                    </p>
-                @endforelse
-                <div class="mt-4">
-                    {{ $courses->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
+                @guest
+                    <a href="{{ route('login') }}">Login to join</a>
+                @endguest
+            </td>
+        </tr>
+    @empty
+        <tr><td colspan="4">No courses found.</td></tr>
+    @endforelse
+</table>
+
+<div style="margin-top: 15px;">
+    {{ $courses->links() }}
+</div>
 @endsection

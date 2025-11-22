@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Category;
 
 class PublicCourseController extends Controller
 {
@@ -13,12 +14,20 @@ class PublicCourseController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $categoryId = $request->input('category');
+
         $courses = Course::with('teacher')
             ->where('status', 'active')
-            ->latest()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('categoryId', $categoryId);
+            })
             ->paginate(10);
-
-        return view('courses.catalog', compact('courses'));
+        
+        $categories = Category::orderBy('name')->get();
+        return view('courses.catalog', compact('courses', 'categories', 'search', 'categoryId'));
     }
 
     /**
