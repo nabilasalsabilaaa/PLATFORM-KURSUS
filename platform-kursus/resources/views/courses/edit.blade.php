@@ -1,11 +1,12 @@
-{{-- resources/views/courses/edit.blade.php --}}
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Course') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('header')
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Edit Course') }}
+    </h2>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
@@ -25,38 +26,38 @@
                     @method('PUT')
 
                     <div class="mb-4">
-                        <x-input-label for="title" :value="__('Title')" />
-                        <x-text-input id="title" name="title" type="text"
-                                      class="mt-1 block w-full"
-                                      :value="old('title', $course->title)" required />
+                        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                        <input id="title" name="title" type="text"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            value="{{ old('title', $course->title) }}" required>
                     </div>
 
                     <div class="mb-4">
-                        <x-input-label for="description" :value="__('Description')" />
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                         <textarea id="description" name="description"
-                                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                  rows="4">{{ old('description', $course->description) }}</textarea>
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                rows="4">{{ old('description', $course->description) }}</textarea>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <x-input-label for="start_date" :value="__('Start Date')" />
-                            <x-text-input id="start_date" name="start_date" type="date"
-                                          class="mt-1 block w-full"
-                                          :value="old('start_date', $course->start_date)" />
+                            <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input id="start_date" name="start_date" type="date"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                value="{{ old('start_date', $course->start_date) }}">
                         </div>
                         <div>
-                            <x-input-label for="end_date" :value="__('End Date')" />
-                            <x-text-input id="end_date" name="end_date" type="date"
-                                          class="mt-1 block w-full"
-                                          :value="old('end_date', $course->end_date)" />
+                            <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input id="end_date" name="end_date" type="date"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                value="{{ old('end_date', $course->end_date) }}">
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <x-input-label for="status" :value="__('Status')" />
+                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                         <select id="status" name="status"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="active" {{ old('status', $course->status) === 'active' ? 'selected' : '' }}>
                                 Active
                             </option>
@@ -68,9 +69,9 @@
 
                     @if ($user->role === 'admin')
                         <div class="mb-4">
-                            <x-input-label for="teacher_id" :value="__('Teacher')" />
+                            <label for="teacher_id" class="block text-sm font-medium text-gray-700">Teacher</label>
                             <select id="teacher_id" name="teacher_id"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                                 <option value="">-- Pilih Teacher --</option>
                                 @foreach ($teachers as $teacher)
                                     <option value="{{ $teacher->id }}"
@@ -88,16 +89,19 @@
 
                     <div class="flex justify-between">
                         <a href="{{ route('courses.index') }}"
-                           class="text-sm text-gray-600 hover:underline">
+                            class="text-sm text-gray-600 hover:underline">
                             ← Back
                         </a>
-                        <x-primary-button>
-                            {{ __('Update') }}
-                        </x-primary-button>
+                        <button type="submit"
+                                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md
+                                    font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700
+                                    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Update
+                        </button>
                     </div>
 
                 </form>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

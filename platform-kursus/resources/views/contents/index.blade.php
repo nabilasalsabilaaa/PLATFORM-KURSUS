@@ -1,25 +1,24 @@
-{{-- resources/views/contents/index.blade.php --}}
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Contents for: ') }} {{ $course->title }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('header')
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Contents for: ') }} {{ $course->title }}
+    </h2>
+@endsection
+
+@section('content')
     <div class="py-12">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
-
             @if (session('success'))
                 <div class="mb-4 text-green-600">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold">Content List</h3>
 
                 <a href="{{ route('contents.create', $course) }}"
-                   class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md">
+                class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md">
                     + New Content
                 </a>
             </div>
@@ -49,12 +48,13 @@
                                 <td class="px-4 py-2 align-top">
                                     <div class="flex gap-2">
                                         <a href="{{ route('contents.edit', [$course, $content]) }}"
-                                           class="px-3 py-1 text-xs rounded bg-yellow-100 text-yellow-800">
+                                        class="px-3 py-1 text-xs rounded bg-yellow-100 text-yellow-800">
                                             Edit
                                         </a>
+
                                         <form action="{{ route('contents.destroy', [$course, $content]) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Delete this content?')">
+                                            method="POST"
+                                            onsubmit="return confirm('Delete this content?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -75,7 +75,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="mt-4">
                 <a href="{{ route('courses.index') }}" class="text-sm text-gray-600 hover:underline">
                     ← Back to Courses
@@ -83,4 +82,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
