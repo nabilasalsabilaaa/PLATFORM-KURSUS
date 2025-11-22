@@ -10,6 +10,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\TeacherProfileController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -99,3 +100,8 @@ Route::middleware(['auth','role:student'])
 Route::middleware(['auth', 'role:teacher'])
     ->get('/profile/teacher', [TeacherProfileController::class, 'index'])
     ->name('profile.teacher');
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class)->except(['show']);
+});
