@@ -6,7 +6,7 @@
     <p>Teacher: {{ $course->teacher->name }}</p>
     <p>Total lessons: {{ $totalLessons }}</p>
 
-    @if (empty($studentProgress))
+    @if (count($studentProgress) === 0)
         <p>No students enrolled in this course yet.</p>
     @else
         <table border="1" cellpadding="6" cellspacing="0" style="margin-top: 10px; width: 100%;">

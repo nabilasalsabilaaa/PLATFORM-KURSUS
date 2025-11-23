@@ -41,7 +41,6 @@
                             <p>Lessons: <span class="font-bold">{{ $course->contents_count }}</span></p>
                         </div>
                     </div>
-
                     <div class="flex flex-wrap gap-2 mt-4">
                         <a href="{{ route('contents.index', $course) }}"
                             class="text-xs px-3 py-1 rounded bg-indigo-100 text-indigo-800">
@@ -54,6 +53,11 @@
                                 View Course
                             </a>
                         @endif
+
+                        <a href="{{ route('teacher.courses.students', $course->id) }}"
+                        class="text-xs px-3 py-1 rounded bg-green-100 text-green-800">
+                            Student Progress
+                        </a>
                     </div>
                 </div>
             @empty
