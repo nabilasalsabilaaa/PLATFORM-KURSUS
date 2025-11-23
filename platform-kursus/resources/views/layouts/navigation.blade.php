@@ -8,7 +8,7 @@
     ">
         <div>
             <a href="/" style="text-decoration: none; font-weight: bold;">
-                MyPlatform
+                Bwakekoqq Stud
             </a>
         </div>
         <div>

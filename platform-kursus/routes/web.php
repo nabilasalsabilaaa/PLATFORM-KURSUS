@@ -11,11 +11,11 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\TeacherProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
 
 // public
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 Route::get('/courses/catalog', [PublicCourseController::class, 'index'])
     ->name('courses.catalog');
@@ -88,9 +88,13 @@ Route::middleware(['auth', 'role:student'])
     ->get('/profile/student', [StudentProfileController::class, 'index'])
     ->name('profile.student');
 
-Route::middleware(['auth', 'role:teacher'])
-    ->get('/profile/teacher', [TeacherProfileController::class, 'index'])
-    ->name('profile.teacher');
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/profile/teacher', [TeacherProfileController::class, 'index'])
+        ->name('profile.teacher');
+
+    Route::get('/teacher/courses/{course}/students', [TeacherProfileController::class, 'courseStudents'])
+        ->name('teacher.courses.students');
+});
 
 //user manage (adm)
 Route::middleware(['auth', 'role:admin'])->group(function () {
