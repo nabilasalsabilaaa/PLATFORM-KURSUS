@@ -3,7 +3,32 @@
 @section('content')
     <h1>Welcome to Bwakekoqq Platform</h1>
 
+    <div style="margin: 8px 0 16px 0;">
+        @auth
+            <p style="margin-bottom: 6px;">
+                You are logged in as <strong>{{ Auth::user()->name }}</strong>
+                (role: <strong>{{ Auth::user()->role }}</strong>).
+            </p>
+            <a href="{{ route('dashboard') }}" style="padding: 6px 10px; border: 1px solid #333; text-decoration:none;">
+                Go to Dashboard
+            </a>
+        @endauth
+
+        @guest
+            <p style="margin-bottom: 6px;">
+                Login atau daftar untuk mulai mengikuti course.
+            </p>
+            <a href="{{ route('login') }}" style="margin-right: 8px; text-decoration:none;">
+                Login
+            </a>
+            <a href="{{ route('register') }}" style="text-decoration:none;">
+                Register
+            </a>
+        @endguest
+    </div>
+
     <p>Temukan kursus yang sesuai dengan minatmu.</p>
+
     <form method="GET" action="{{ route('home') }}" style="margin: 15px 0;">
         <input
             type="text"
@@ -51,11 +76,15 @@
                         <td>{{ $course->category->name ?? '-' }}</td>
                         <td>{{ $course->students_count }}</td>
                         <td>
-                            <a href="{{ route('courses.catalog') }}">View in Catalog</a>
+                            <a href="{{ route('courses.detail', $course->id) }}">View Detail</a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @endif
+
+    <p style="margin-top: 12px;">
+        <a href="{{ route('courses.catalog') }}">Lihat semua course →</a>
+    </p>
 @endsection

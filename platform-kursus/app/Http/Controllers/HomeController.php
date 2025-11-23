@@ -12,18 +12,21 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $search     = $request->input('search');
+        $search     = trim($request->input('search'));
         $categoryId = $request->input('category');
 
         $query = Course::with(['teacher', 'category'])
             ->where('status', 'active')
-            ->withCount('students'); // butuh relasi students() di model Course
+            ->withCount('students'); 
 
-        if ($search) {
-            $query->where('title', 'like', '%' . $search . '%');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
         }
 
-        if ($categoryId) {
+        if (!empty($categoryId)) {
             $query->where('category_id', $categoryId);
         }
 
@@ -34,7 +37,12 @@ class HomeController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
-        return view('home', compact('courses', 'categories', 'search', 'categoryId'));
+        return view('home', [
+            'courses'    => $courses,
+            'categories' => $categories,
+            'search'     => $search,
+            'categoryId' => $categoryId,
+        ]);
     }
 
     /**

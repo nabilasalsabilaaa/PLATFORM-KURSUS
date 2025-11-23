@@ -20,6 +20,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/courses/catalog', [PublicCourseController::class, 'index'])
     ->name('courses.catalog');
 
+Route::get('/courses/{course}/detail', [PublicCourseController::class, 'show'])
+    ->name('courses.detail');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 // auth/profile
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

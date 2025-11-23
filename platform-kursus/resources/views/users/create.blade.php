@@ -46,11 +46,12 @@
             </select>
         </div>
 
-        <div style="margin-bottom: 10px;">
-            <label>
-                <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
-                Active
-            </label>
+        <div class="mb-3">
+            <label for="is_active">Status</label>
+            <select name="is_active" id="is_active">
+                <option value="1" selected>Active</option>
+                <option value="0">Inactive</option>
+            </select>
         </div>
 
         <button type="submit">Save</button>

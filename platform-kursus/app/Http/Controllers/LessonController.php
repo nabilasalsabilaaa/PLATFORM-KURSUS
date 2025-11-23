@@ -40,21 +40,60 @@ class LessonController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role !== 'student') {
-            abort(403, 'Only students can access lessons.');
-        }
-
-        if (!$user->enrolledCourses->contains($course->id)) {
-            abort(403, 'You must enroll to access this course.');
-        }
-
         if ($content->course_id !== $course->id) {
             abort(404);
         }
 
-        $contents = $course->contents;
+        if ($user->role !== 'student') {
+            abort(403, 'Only students can access lessons.');
+        }
 
-        return view('lessons.show', compact('course', 'content', 'contents', 'user'));
+        $isEnrolled = $user->enrolledCourses()->where('course_id', $course->id)->exists();
+        if (! $isEnrolled) {
+            return redirect()->route('courses.catalog')
+                ->with('error', 'You must enroll this course first.');
+        }
+
+        $lessons = $course->contents()->orderBy('id')->get();
+
+        $currentIndex = $lessons->search(function ($item) use ($content) {
+            return $item->id === $content->id;
+        });
+
+        $previousLesson = $currentIndex > 0
+            ? $lessons[$currentIndex - 1]
+            : null;
+
+        $nextLesson = $currentIndex < $lessons->count() - 1
+            ? $lessons[$currentIndex + 1]
+            : null;
+
+        $previousCompleted = true;
+        if ($previousLesson) {
+        $previousCompleted = $user->completedLessons()
+            ->where('course_id', $course->id)
+            ->where('content_id', $previousLesson->id)
+            ->exists();
+        }
+
+        if ($previousLesson && ! $previousCompleted) {
+            return redirect()
+                ->route('lessons.show', [$course->id, $previousLesson->id])
+                ->with('error', 'You must complete the previous lesson first.');
+        }
+
+        $isCompleted = $user->completedLessons()
+            ->where('course_id', $course->id)
+            ->where('content_id', $content->id)
+            ->exists();
+
+        return view('lessons.show', [
+            'course'          => $course,
+            'content'         => $content,
+            'previousLesson'  => $previousLesson,
+            'nextLesson'      => $nextLesson,
+            'isCompleted'     => $isCompleted,
+        ]);
     }
 
     /**
@@ -84,17 +123,19 @@ class LessonController extends Controller
     public function markAsDone(Course $course, Content $content)
     {
         $user = Auth::user();
-        if (!$user->enrolledCourses->contains($course->id)) {
-            abort(403);
+
+        if ($user->role !== 'student') {
+            abort(403, 'Only students can mark lessons as done.');
         }
 
-        $user->learnedContents()->syncWithoutDetaching([
-            $content->id => [
-                'is_done' => true,
-                'done_at' => now(),
-            ]
+        if ($content->course_id !== $course->id) {
+            abort(404);
+        }
+
+        $user->completedLessons()->syncWithoutDetaching([
+            $content->id => ['course_id' => $course->id],
         ]);
 
-        return back()->with('success', 'Marked as done.');
+        return back()->with('success', 'Lesson marked as done.');
     }
 }

@@ -36,12 +36,12 @@
             </select>
         </div>
 
-        <div style="margin-bottom: 10px;">
-            <label>
-                <input type="checkbox" name="is_active" value="1"
-                    {{ old('is_active', $user->is_active) ? 'checked' : '' }}>
-                Active
-            </label>
+        <div class="mb-3">
+            <label for="is_active">Status</label>
+            <select name="is_active" id="is_active">
+                <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
+                <option value="0" {{ ! $user->is_active ? 'selected' : '' }}>Inactive</option>
+            </select>
         </div>
 
         <div style="margin-bottom: 10px;">
