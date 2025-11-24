@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
+use App\Models\Category;
 
 class Course extends Model
 {
@@ -17,7 +18,7 @@ class Course extends Model
         'end_date',
         'status',
         'teacher_id',
-        // 'category_id',
+        'category_id',
     ];
 
     public function teacher()
@@ -28,6 +29,11 @@ class Course extends Model
     public function contents()
     {
         return $this->hasMany(Content::class)->orderBy('order');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function students()
