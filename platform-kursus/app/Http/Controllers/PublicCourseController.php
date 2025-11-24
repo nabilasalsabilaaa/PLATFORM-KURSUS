@@ -99,6 +99,7 @@ class PublicCourseController extends Controller
             if (! $user || ! in_array($user->role, ['admin', 'teacher'])) {
                 abort(404);
             }
+
             if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
                 abort(404);
             }
@@ -107,6 +108,7 @@ class PublicCourseController extends Controller
         $course->load([
             'teacher',
             'category',
+            'students',
             'contents' => function ($q) {
                 $q->orderBy('order')->orderBy('id');
             },

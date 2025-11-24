@@ -16,12 +16,14 @@ use App\Http\Controllers\HomeController;
 // public
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
 Route::get('/courses/catalog', [PublicCourseController::class, 'index'])
     ->name('courses.catalog');
 
 Route::get('/courses/{course}/detail', [PublicCourseController::class, 'show'])
     ->name('courses.detail');
+
+Route::get('/courses/{course}', [PublicCourseController::class, 'show'])
+    ->name('courses.show');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
