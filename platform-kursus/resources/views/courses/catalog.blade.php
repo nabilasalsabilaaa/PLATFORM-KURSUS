@@ -32,6 +32,7 @@
                     @endif
                 @endauth
                 <th>Contact</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -71,21 +72,33 @@
                                     </form>
                                 @endif
                             </td>
-                        @endif
-                    @endauth
-                    <td>
-                        @if ($course->teacher && $course->teacher->email)
-                            <a href="mailto:{{ $course->teacher->email }}">
-                                Hubungi Teacher
+                            @endif
+                        @endauth
+                        <td>
+                            @if ($course->teacher && $course->teacher->email)
+                                <a href="mailto:{{ $course->teacher->email }}">
+                                    Hubungi Teacher
+                                </a>
+                            @else
+                                -
+                            @endif
+                            @guest
+                                <br>
+                                <a href="{{ route('login') }}" style="font-size: 12px;">
+                                    Login to join
+                                </a>
+                            @endguest
+                        </td>
+                            
+                        <td>
+                            <a href="{{ route('courses.show', $course->id) }}">
+                                View Detail
                             </a>
-                        @else
-                            -
-                        @endif
-                    </td>
+                        </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7">No courses found.</td>
+                    <td colspan="8">No courses found.</td>
                 </tr>
             @endforelse
         </tbody>
