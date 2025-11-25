@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Enrollment;
 
 class Course extends Model
 {
@@ -41,6 +42,11 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_user')
                     ->withTimestamps();
     }
+
+    public function enrollments() {
+        return $this->hasMany(Enrollment::class);
+    }
+
 
 
 }
