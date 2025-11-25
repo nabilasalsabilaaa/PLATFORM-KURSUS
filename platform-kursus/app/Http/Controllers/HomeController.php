@@ -14,6 +14,15 @@ class HomeController extends Controller
     {
         $search     = trim($request->input('search'));
         $categoryId = $request->input('category');
+        $type       = $request->input('type');  
+        $topic      = $request->input('topic'); 
+
+        $popularCourses = Course::with(['teacher', 'category'])
+            ->where('status', 'active')
+            ->withCount('students')
+            ->orderByDesc('students_count')
+            ->take(5)
+            ->get();
 
         $query = Course::with(['teacher', 'category'])
             ->where('status', 'active')
@@ -30,18 +39,28 @@ class HomeController extends Controller
             $query->where('category_id', $categoryId);
         }
 
+        if (!empty($type)) {
+            $query->where('type', $type);
+        }
+
+        if (!empty($topic)) {
+            $query->where('topic', 'like', '%' . $topic . '%');
+        }
+
         $courses = $query
             ->orderByDesc('students_count')
-            ->take(5)
             ->get();
 
         $categories = Category::orderBy('name')->get();
 
         return view('home', [
-            'courses'    => $courses,
-            'categories' => $categories,
-            'search'     => $search,
-            'categoryId' => $categoryId,
+            'popularCourses' => $popularCourses,
+            'courses'        => $courses,
+            'categories'     => $categories,
+            'search'         => $search,
+            'categoryId'     => $categoryId,
+            'type'           => $type,
+            'topic'          => $topic,
         ]);
     }
 
