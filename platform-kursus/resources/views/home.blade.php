@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platform-Kursus</title>
+    <title>Chills-Kursus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-
     <script>
         tailwind.config = {
             theme: {
@@ -48,17 +47,18 @@
 <body class="bg-primary-50 min-h-screen text-gray-800">
     <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-primary-50">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3" data-aos="fade-right">
-                <div class="bg-primary-500 text-white p-2.5 rounded-xl shadow-soft-card">
-                    <i class="fas fa-graduation-cap text-xl"></i>
-                </div>
+            <div class="flex items-center gap-3">
+                
+                <img src="{{ asset('images/logo.png') }}" 
+                    alt="Logo"
+                    class="w-10 h-10 object-contain">
                 <div>
                     <h1 class="text-xl font-bold text-primary-600 tracking-tight">Chills Kursus</h1>
                     <p class="text-xs text-gray-500 -mt-0.5">Find your favorite course</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4" data-aos="fade-left">
+            <div class="flex items-center gap-4">
                 @auth
                     <div class="hidden md:flex items-center gap-2">
                         <div class="w-9 h-9 bg-primary-500 rounded-full flex items-center justify-center text-white font-semibold">
@@ -78,12 +78,12 @@
                 @guest
                     <a href="{{ route('login') }}"
                         class="text-primary-500 hover:text-primary-600 font-medium text-sm transition-colors">
-                        Masuk
+                        Login
                     </a>
                     <a href="{{ route('register') }}"
                         class="hidden sm:inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-soft-card transition-all duration-300 hover:-translate-y-0.5">
                         <i class="fas fa-user-plus text-xs"></i>
-                        Daftar
+                        Register
                     </a>
                 @endguest
             </div>
@@ -92,7 +92,7 @@
 
     <section class="py-10 md:py-16 bg-gradient-to-b from-primary-100/80 via-primary-50 to-transparent">
         <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[1.2fr,0.8fr] gap-10 items-center">
-            <div data-aos="fade-up" data-aos-delay="100">
+            <div>
                 <div class="inline-flex items-center gap-2 bg-white/70 rounded-full px-3 py-1 mb-4 shadow-soft-card">
                     <span class="w-2 h-2 rounded-full bg-accent-50 animate-pulse"></span>
                     <span class="text-xs font-medium text-primary-600 uppercase tracking-wide">
@@ -136,7 +136,7 @@
                 </div>
             </div>
 
-            <div class="relative hidden lg:block" data-aos="fade-left" data-aos-delay="200">
+            <div class="relative hidden lg:block">
                 <div class="absolute -inset-6 bg-primary-500/25 blur-3xl opacity-80 pointer-events-none"></div>
                 <div class="relative bg-gradient-to-b from-primary-500 to-primary-600 rounded-[2rem] h-64 shadow-soft-card overflow-hidden">
                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_#ffffff_0,_transparent_55%)] opacity-40"></div>
@@ -147,17 +147,17 @@
                                 Belajar kapan saja, di mana saja.
                             </h3>
                             <p class="text-xs text-primary-50/90 max-w-xs">
-                                Akses materi video, latihan, dan proyek praktis yang dirancang untuk membantu kamu naik level.
+                                Akses materi video, latihan, dan proyek praktis yang dirancang untuk level up your skill.
                             </p>
                         </div>
                         <div class="flex gap-3 text-xs">
                             <div class="flex-1 bg-white/10 rounded-2xl px-3 py-2">
                                 <p class="font-semibold">Belajar Fleksibel</p>
-                                <p class="text-[11px] text-primary-50/90">Atur kecepatan belajar sesuai jadwalmu.</p>
+                                <p class="text-[11px] text-primary-50/90">Akses materi kapan saja saja dan dimana saja</p>
                             </div>
                             <div class="flex-1 bg-white/10 rounded-2xl px-3 py-2">
-                                <p class="font-semibold">Proyek Nyata</p>
-                                <p class="text-[11px] text-primary-50/90">Bangun portfolio yang bisa ditunjukkan.</p>
+                                <p class="font-semibold">Pembelajaran Interaktif</p>
+                                <p class="text-[11px] text-primary-50/90">Materi berupa video dan quiz, buat kegiatan belajar jadi lebih menarik</p>
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
 
     <main class="max-w-6xl mx-auto px-6 pb-14 space-y-10">
         <section class="space-y-5">
-            <div class="flex items-center justify-between" data-aos="fade-up">
+            <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs uppercase tracking-[0.18em] text-primary-600/70 mb-1">Popular Courses</p>
                     <h2 class="text-xl md:text-2xl font-bold text-gray-900">5 Kursus Terpopuler</h2>
@@ -180,8 +180,8 @@
             @endphp
 
             @if ($popularCourses->isEmpty())
-                <div class="bg-white rounded-3xl shadow-soft-card p-10 text-center" data-aos="fade-up">
-                    <i class="fas fa-book-open text-4xl text-neutral-100 mb-4"></i>
+                <div class="bg-white rounded-3xl shadow-soft-card p-10 text-center">
+                    <i class="fas fa-sad-tear text-4xl text-neutral-100 mb-4"></i>
                     <h3 class="text-lg font-semibold mb-1 text-gray-800">Belum ada kursus yang tersedia</h3>
                     <p class="text-gray-500 text-sm max-w-md mx-auto">
                         Kami sedang mempersiapkan konten terbaik untuk Anda. Coba kembali beberapa saat lagi.
@@ -239,13 +239,13 @@
                 </div>
             @endif
         </section>
-    <section class="max-w-6xl mx-auto px-6 mb-10">
-        <div class="bg-white rounded-3xl shadow-soft-card p-6" data-aos="fade-up">
+    <section id="courses" class="max-w-6xl mx-auto px-6 mb-10">
+        <div class="bg-white rounded-3xl shadow-soft-card p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-semibold text-gray-800">Filter Kursus</h2>
             </div>
 
-            <form method="GET" action="{{ route('home') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <form method="GET" action="{{ route('home') }}#courses" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
                     <select name="category"
@@ -256,16 +256,6 @@
                                 {{ $cat->name }}
                             </option>
                         @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis</label>
-                    <select name="type"
-                            class="w-full p-3 border border-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/70 text-sm">
-                        <option value="">Semua Jenis</option>
-                        <option value="gratis">Gratis</option>
-                        <option value="berbayar">Berbayar</option>
                     </select>
                 </div>
 
@@ -291,7 +281,7 @@
     </section>
 
         <section class="space-y-4 mt-4">
-            <div class="flex items-center justify-between" data-aos="fade-up">
+            <div class="flex items-center justify-between">
                 <h2 class="text-lg md:text-xl font-bold text-gray-900">
                     Semua Kursus
                 </h2>
@@ -301,9 +291,11 @@
             </div>
 
             @if ($courses->isEmpty())
-                <div class="bg-white rounded-2xl shadow-soft-card p-6 text-center" data-aos="fade-up">
-                    <p class="text-gray-500 text-sm">
-                        Tidak ada kursus yang cocok dengan filter yang dipilih.
+                <div class="bg-white rounded-3xl shadow-soft-card p-10 text-center">
+                    <i class="fas fa-sad-tear text-4xl text-neutral-100 mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-1 text-gray-800">Tidak kategori yang cocok dengan filter anda</h3>
+                    <p class="text-gray-500 text-sm max-w-md mx-auto">
+                        Coba ubah filter atau ganti kata kunci untuk temukan kursus yang anda cari
                     </p>
                 </div>
             @else
@@ -353,7 +345,7 @@
             @endif
         </section>
 
-        <section class="space-y-5" data-aos="fade-up">
+        <section class="space-y-5">
             <div class="text-center mb-3">
                 <h2 class="text-xl md:text-2xl font-bold text-gray-900">F A Q</h2>
                 <p class="text-sm text-gray-500 mt-1">
@@ -413,14 +405,14 @@
     <footer class="bg-gray-900 text-white pt-10 pb-6 mt-4">
         <div class="max-w-6xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div data-aos="fade-up">
-                    <h3 class="text-lg font-bold mb-3">Bwakekoqq</h3>
+                <div>
+                    <h3 class="text-lg font-bold mb-3">Chills Kursus</h3>
                     <p class="text-gray-400 text-sm">
                         Platform kursus online terpercaya untuk meningkatkan skill dan karir Anda.
                     </p>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="80">
+                <div>
                     <h4 class="font-semibold mb-3 text-sm">Tautan Cepat</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
@@ -430,7 +422,7 @@
                     </ul>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="140">
+                <div>
                     <h4 class="font-semibold mb-3 text-sm">Kategori</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         @foreach ($categories->take(5) as $cat)
@@ -439,7 +431,7 @@
                     </ul>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="200">
+                <div>
                     <h4 class="font-semibold mb-3 text-sm">Ikuti Kami</h4>
                     <div class="flex gap-4 text-gray-400 text-lg">
                         <a href="#" class="hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
