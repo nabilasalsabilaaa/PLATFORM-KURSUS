@@ -36,7 +36,7 @@ class LessonController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Content $content, Course $course)
+    public function show(Course $course, Content $content)
     {
         $user = Auth::user();
 
@@ -87,9 +87,12 @@ class LessonController extends Controller
             ->where('content_id', $content->id)
             ->exists();
 
+            $contents = $course->contents()->orderBy('order')->get();
+
         return view('lessons.show', [
             'course'          => $course,
             'content'         => $content,
+            'contents'        => $contents,
             'previousLesson'  => $previousLesson,
             'nextLesson'      => $nextLesson,
             'isCompleted'     => $isCompleted,
@@ -133,7 +136,10 @@ class LessonController extends Controller
         }
 
         $user->completedLessons()->syncWithoutDetaching([
-            $content->id => ['course_id' => $course->id],
+            $content->id => [
+                'is_done' => true,
+                'done_at' => now(),
+            ],
         ]);
 
         return back()->with('success', 'Lesson marked as done.');
