@@ -39,7 +39,6 @@
             }
         }
     </script>
-    
     <style>
         .nav-link {
             position: relative;
@@ -110,6 +109,14 @@
             </div>
 
             <div class="hidden md:flex items-center space-x-1" id="nav-links">
+                @auth
+                    <a href="{{ route('dashboard') }}" 
+                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                        data-route="dashboard">
+                        Dashboard
+                    </a>
+                @endauth
+
                 <a href="{{ route('courses.catalog') }}" 
                     class="nav-link {{ request()->routeIs('courses.catalog') ? 'active' : '' }}"
                     data-route="courses.catalog">
@@ -145,12 +152,6 @@
                             Categories
                         </a>
                     @endif
-
-                    <a href="{{ route('dashboard') }}" 
-                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                        data-route="dashboard">
-                        Dashboard
-                    </a>
                 @endauth
             </div>
 
@@ -174,8 +175,8 @@
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit"
-                                class="inline-flex items-center gap-2 text-sm font-medium text-red-500 hover:text-red-600 transition-colors">
-                            <i class="fas fa-sign-out-alt text-xs"></i>
+                                class="inline-flex items-center gap-2 text-sm font-medium text-red-500 hover:text-red-600 transition-colors mb-1">
+                            <i class="fas fa-sign-out-alt text-xs mt-1"></i>
                             Logout
                         </button>
                     </form>
@@ -234,12 +235,12 @@
                     @endif
 
                     <a href="{{ route('dashboard') }}" 
-                       class="mobile-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        class="mobile-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         Dashboard
                     </a>
 
                     <a href="{{ route('profile.edit') }}" 
-                       class="mobile-nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                        class="mobile-nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                         Profile
                     </a>
 
@@ -259,7 +260,7 @@
     </div>
 
     <div class="h-1 bg-primary-500" id="active-indicator"></div>
-</nav>
+    </nav>
 
     <div class="min-h-screen">
         @hasSection('header')
@@ -276,97 +277,96 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu       = document.getElementById('mobile-menu');
-        const nav              = document.querySelector('nav');
-        const indicator        = document.getElementById('active-indicator');
-        const navLinks         = Array.from(document.querySelectorAll('#nav-links .nav-link'));
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu       = document.getElementById('mobile-menu');
+            const nav              = document.querySelector('nav');
+            const indicator        = document.getElementById('active-indicator');
+            const navLinks         = Array.from(document.querySelectorAll('#nav-links .nav-link'));
 
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', function () {
-                mobileMenu.classList.toggle('hidden');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function () {
+                    mobileMenu.classList.toggle('hidden');
 
-                const icon = this.querySelector('i');
-                if (mobileMenu.classList.contains('hidden')) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                } else {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                }
-            });
-        }
-
-        if (!indicator || !nav || navLinks.length === 0) {
-            return;
-        }
-
-        function setIndicatorInstant(link) {
-            if (!link) return;
-            const linkRect = link.getBoundingClientRect();
-            const navRect  = nav.getBoundingClientRect();
-
-            indicator.style.transition = 'none'; // tanpa animasi
-            indicator.style.width      = `${linkRect.width}px`;
-            indicator.style.transform  = `translateX(${linkRect.left - navRect.left}px)`;
-        }
-
-        function animateIndicatorTo(link) {
-            if (!link) return;
-            const linkRect = link.getBoundingClientRect();
-            const navRect  = nav.getBoundingClientRect();
-
-            indicator.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            indicator.style.width      = `${linkRect.width}px`;
-            indicator.style.transform  = `translateX(${linkRect.left - navRect.left}px)`;
-        }
-
-        window.addEventListener('resize', function () {
-            const activeLink = document.querySelector('.nav-link.active');
-            if (activeLink) {
-                setIndicatorInstant(activeLink);
+                    const icon = this.querySelector('i');
+                    if (mobileMenu.classList.contains('hidden')) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    } else {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    }
+                });
             }
-        });
-        const LAST_INDEX_KEY = 'nav_last_index';
-        navLinks.forEach((link, index) => {
-            link.dataset.index = index;
-        });
 
-        const storedIndex = parseInt(localStorage.getItem(LAST_INDEX_KEY), 10);
-        const fromLink =
-            Number.isInteger(storedIndex) && navLinks[storedIndex]
-                ? navLinks[storedIndex]
-                : navLinks[0]; 
+            if (!indicator || !nav || navLinks.length === 0) {
+                return;
+            }
 
-        const activeLink = document.querySelector('.nav-link.active') || fromLink;
-        setIndicatorInstant(fromLink);
-        requestAnimationFrame(() => {
-            animateIndicatorTo(activeLink);
-        });
+            function setIndicatorInstant(link) {
+                if (!link) return;
+                const linkRect = link.getBoundingClientRect();
+                const navRect  = nav.getBoundingClientRect();
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                const index = parseInt(this.dataset.index, 10);
-                if (Number.isInteger(index)) {
-                    localStorage.setItem(LAST_INDEX_KEY, index);
-                }
-                // tidak di-preventDefault; biarkan navigasi jalan normal
-            });
-        });
+                indicator.style.transition = 'none'; // tanpa animasi
+                indicator.style.width      = `${linkRect.width}px`;
+                indicator.style.transform  = `translateX(${linkRect.left - navRect.left}px)`;
+            }
 
-        navLinks.forEach(link => {
-            link.addEventListener('mouseenter', function () {
-                const href = this.getAttribute('href');
-                if (href && !href.startsWith('#')) {
-                    const preloadLink = document.createElement('link');
-                    preloadLink.rel  = 'prefetch';
-                    preloadLink.href = href;
-                    document.head.appendChild(preloadLink);
+            function animateIndicatorTo(link) {
+                if (!link) return;
+                const linkRect = link.getBoundingClientRect();
+                const navRect  = nav.getBoundingClientRect();
+
+                indicator.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                indicator.style.width      = `${linkRect.width}px`;
+                indicator.style.transform  = `translateX(${linkRect.left - navRect.left}px)`;
+            }
+
+            window.addEventListener('resize', function () {
+                const activeLink = document.querySelector('.nav-link.active');
+                if (activeLink) {
+                    setIndicatorInstant(activeLink);
                 }
             });
+            const LAST_INDEX_KEY = 'nav_last_index';
+            navLinks.forEach((link, index) => {
+                link.dataset.index = index;
+            });
+
+            const storedIndex = parseInt(localStorage.getItem(LAST_INDEX_KEY), 10);
+            const fromLink =
+                Number.isInteger(storedIndex) && navLinks[storedIndex]
+                    ? navLinks[storedIndex]
+                    : navLinks[0]; 
+
+            const activeLink = document.querySelector('.nav-link.active') || fromLink;
+            setIndicatorInstant(fromLink);
+            requestAnimationFrame(() => {
+                animateIndicatorTo(activeLink);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    const index = parseInt(this.dataset.index, 10);
+                    if (Number.isInteger(index)) {
+                        localStorage.setItem(LAST_INDEX_KEY, index);
+                    }
+                });
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function () {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        const preloadLink = document.createElement('link');
+                        preloadLink.rel  = 'prefetch';
+                        preloadLink.href = href;
+                        document.head.appendChild(preloadLink);
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
