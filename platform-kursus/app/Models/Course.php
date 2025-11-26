@@ -20,6 +20,7 @@ class Course extends Model
         'status',
         'teacher_id',
         'category_id',
+        'thumbnail',
     ];
 
     public function teacher()
@@ -52,6 +53,26 @@ class Course extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function getThumbnailUrlAttribute()
+    {
+        if (!$this->thumbnail) {
+            return null;
+        }
+        
+        if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
+            return $this->thumbnail;
+        }
+        
+        return asset('storage/' . $this->thumbnail);
+    }
 
+    public function videoLessons()
+    {
+        return $this->contents()->where('content_type', 'video');
+    }
 
+    public function quizzes()
+    {
+        return $this->contents()->where('content_type', 'quiz');
+    }
 }

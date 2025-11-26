@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->text('description')->nullable();
             $table->longText('body')->nullable(); 
+            $table->string('content_type')->default('text');
+            $table->string('duration')->nullable();
             $table->unsignedInteger('order')->default(1);
             $table->timestamps();
         });

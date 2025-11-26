@@ -24,7 +24,7 @@ Route::get('/courses/{course}/detail', [PublicCourseController::class, 'show'])
 
 Route::get('/courses/{course}', [PublicCourseController::class, 'show'])
     ->name('courses.show');
-
+    
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // auth/profile

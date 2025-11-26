@@ -54,26 +54,26 @@ class LessonController extends Controller
                 ->with('error', 'You must enroll this course first.');
         }
 
-        $lessons = $course->contents()->orderBy('id')->get();
+        $contents = $course->contents()->orderBy('order')->get();
 
-        $currentIndex = $lessons->search(function ($item) use ($content) {
+        $currentIndex = $contents->search(function ($item) use ($content) {
             return $item->id === $content->id;
         });
 
         $previousLesson = $currentIndex > 0
-            ? $lessons[$currentIndex - 1]
+            ? $contents[$currentIndex - 1]
             : null;
 
-        $nextLesson = $currentIndex < $lessons->count() - 1
-            ? $lessons[$currentIndex + 1]
+        $nextLesson = $currentIndex < $contents->count() - 1
+            ? $contents[$currentIndex + 1]
             : null;
 
         $previousCompleted = true;
         if ($previousLesson) {
-        $previousCompleted = $user->completedLessons()
-            ->where('course_id', $course->id)
-            ->where('content_id', $previousLesson->id)
-            ->exists();
+            $previousCompleted = $user->completedLessons()
+                ->where('course_id', $course->id)
+                ->where('content_id', $previousLesson->id)
+                ->exists();
         }
 
         if ($previousLesson && ! $previousCompleted) {
@@ -86,8 +86,6 @@ class LessonController extends Controller
             ->where('course_id', $course->id)
             ->where('content_id', $content->id)
             ->exists();
-
-            $contents = $course->contents()->orderBy('order')->get();
 
         return view('lessons.show', [
             'course'          => $course,
@@ -142,6 +140,16 @@ class LessonController extends Controller
             ],
         ]);
 
-        return back()->with('success', 'Lesson marked as done.');
+        $nextLesson = $course->contents()
+            ->where('order', '>', $content->order)
+            ->orderBy('order', 'asc')
+            ->first();
+        
+        if ($nextLesson) {
+            return redirect()->route('lessons.show', [$course, $nextLesson])
+                ->with('success', 'Lesson marked as done. Moving to next lesson.');
+        }
+
+        return back()->with('success', 'Lesson marked as done. Course completed!');
     }
 }

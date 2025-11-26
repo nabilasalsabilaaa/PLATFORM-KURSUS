@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
@@ -69,6 +70,7 @@ class CourseController extends Controller
         $rules = [
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'thumbnail' => 'nullable|image|max:2048',
             'start_date'  => ['nullable', 'date'],
             'end_date'    => ['nullable', 'date', 'after_or_equal:start_date'],
             'status'      => ['required', 'in:active,inactive'],
@@ -79,6 +81,12 @@ class CourseController extends Controller
         }
 
         $validated = $request->validate($rules);
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('courses/thumbnails', 'public');
+            $validated['thumbnail'] = $thumbnailPath;
+        }
+
         if ($user->role === 'teacher') {
             $validated['teacher_id'] = $user->id;
         }
@@ -136,6 +144,7 @@ class CourseController extends Controller
         $rules = [
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'thumbnail' => 'nullable|image|max:2048',
             'start_date'  => ['nullable', 'date'],
             'end_date'    => ['nullable', 'date', 'after_or_equal:start_date'],
             'status'      => ['required', 'in:active,inactive'],
@@ -147,6 +156,14 @@ class CourseController extends Controller
         }
 
         $validated = $request->validate($rules);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($course->thumbnail) {
+                Storage::disk('public')->delete($course->thumbnail);
+            }
+            $thumbnailPath = $request->file('thumbnail')->store('courses/thumbnails', 'public');
+            $validated['thumbnail'] = $thumbnailPath;
+        }
 
         if ($user->role === 'teacher') {
             $validated['teacher_id'] = $user->id;
