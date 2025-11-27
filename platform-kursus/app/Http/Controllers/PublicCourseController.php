@@ -14,30 +14,30 @@ class PublicCourseController extends Controller
      */
     public function index(Request $request)
     {
-        $search = trim($request->input('search'));
+        $search     = trim($request->input('search'));
         $categoryId = $request->input('category');
 
         $query = Course::with(['teacher', 'category'])
             ->where('status', 'active')
             ->withCount('students')
-            ->withCount('contents'); 
+            ->withCount('contents');
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        if (!empty($categoryId)) {
+        if (! empty($categoryId)) {
             $query->where('category_id', $categoryId);
         }
 
-        $courses = $query->paginate(10);
+        $courses    = $query->paginate(10);
         $categories = Category::orderBy('name')->get();
 
         $enrolledCourseIds = [];
-        $courseProgress = [];
+        $courseProgress    = [];
 
         if (Auth::check() && Auth::user()->role === 'student') {
             $student = Auth::user();
@@ -47,7 +47,7 @@ class PublicCourseController extends Controller
                 ->toArray();
 
             foreach ($courses as $course) {
-                $totalLessons = $course->contents_count; 
+                $totalLessons = $course->contents_count;
                 if ($totalLessons == 0) {
                     $courseProgress[$course->id] = 0;
                     continue;
@@ -70,23 +70,6 @@ class PublicCourseController extends Controller
             'courseProgress'    => $courseProgress,
         ]);
     }
-        
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -94,7 +77,6 @@ class PublicCourseController extends Controller
     public function show(Course $course)
     {
         $user = Auth::user();
-
         if ($course->status !== 'active') {
             if (! $user || ! in_array($user->role, ['admin', 'teacher'])) {
                 abort(404);
@@ -112,6 +94,9 @@ class PublicCourseController extends Controller
             'contents' => function ($q) {
                 $q->orderBy('order')->orderBy('id');
             },
+            'reviews.user' => function ($q) {
+                $q->latest();
+            },
         ]);
 
         $totalLessons = $course->contents->count();
@@ -120,19 +105,25 @@ class PublicCourseController extends Controller
         $isEnrolled     = false;
         $completedCount = 0;
         $progress       = 0;
+        $userReview     = null;
 
         if ($isStudent) {
             $isEnrolled = $user->enrolledCourses()
-            ->where('course_id', $course->id)
-            ->exists();
+                ->where('course_id', $course->id)
+                ->exists();
 
             if ($isEnrolled && $totalLessons > 0) {
                 $completedCount = $user->completedLessons()
                     ->where('course_id', $course->id)
                     ->count();
+
                 $progress = round($completedCount / $totalLessons * 100);
             }
+
+            $userReview = $course->reviews->firstWhere('user_id', $user->id);
         }
+
+        $avgRating = $course->reviews->avg('rating') ?? 0;
 
         return view('courses.show', [
             'course'         => $course,
@@ -141,30 +132,9 @@ class PublicCourseController extends Controller
             'isEnrolled'     => $isEnrolled,
             'completedCount' => $completedCount,
             'progress'       => $progress,
+            'avgRating'      => number_format($avgRating, 1),
+            'reviews'        => $course->reviews,
+            'userReview'     => $userReview,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

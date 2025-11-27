@@ -12,6 +12,7 @@ use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\TeacherProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReviewController;
 
 // public
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -88,6 +89,9 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 
     Route::post('/courses/{course}/lessons/{content}/done', [LessonController::class, 'markAsDone'])
         ->name('lessons.done');
+
+    Route::post('/courses/{course}/reviews', [ReviewController::class, 'store'])
+        ->name('reviews.store');
 });
 
 //profil (stud/teach)
