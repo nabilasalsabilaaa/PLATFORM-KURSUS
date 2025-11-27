@@ -125,10 +125,10 @@
 
                 @auth
                     @if (Auth::user()->role === 'teacher')
-                        <a href="{{ route('profile.teacher') }}" 
+                        <a href="{{ route('courses.index') }}" 
                             class="nav-link {{ request()->routeIs('profile.teacher') ? 'active' : '' }}"
                             data-route="profile.teacher">
-                            Teacher Dashboard
+                            My Courses
                         </a>
                     @endif
 
@@ -136,7 +136,7 @@
                         <a href="{{ route('profile.student') }}" 
                             class="nav-link {{ request()->routeIs('profile.student') ? 'active' : '' }}"
                             data-route="profile.student">
-                            My Learning
+                            My Courses
                         </a>
                     @endif
 
@@ -212,14 +212,14 @@
                     @if (Auth::user()->role === 'teacher')
                         <a href="{{ route('profile.teacher') }}" 
                             class="mobile-nav-link {{ request()->routeIs('profile.teacher') ? 'active' : '' }}">
-                            Teacher Dashboard
+                            My Courses
                         </a>
                     @endif
 
                     @if (Auth::user()->role === 'student')
                         <a href="{{ route('profile.student') }}" 
                             class="mobile-nav-link {{ request()->routeIs('profile.student') ? 'active' : '' }}">
-                            My Learning
+                            My Courses
                         </a>
                     @endif
 

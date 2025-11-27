@@ -13,7 +13,7 @@
         </h3>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <h4 class="font-semibold text-lg mb-4">Your Courses</h4>
+            <h4 class="font-semibold text-lg mb-4">My Courses</h4>
 
             @forelse ($courses as $course)
                 <div class="border rounded-lg p-4 mb-4">

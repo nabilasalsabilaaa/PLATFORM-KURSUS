@@ -32,6 +32,6 @@
     @endif
 
     <p style="margin-top: 15px;">
-        <a href="{{ route('profile.teacher') }}">← Back to Teacher Dashboard</a>
+        <a href="{{ route('profile.teacher') }}">← Back to My Courses</a>
     </p>
 @endsection
