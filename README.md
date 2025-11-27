@@ -54,7 +54,7 @@ Laravel Online Courses Platform
   <li><strong>Laravel:</strong> 12.38.1</li>
   <li><strong>Node.js:</strong> v22.20.0</li>
   <li><strong>NPM:</strong> 10.9.3</li>
-  <li><strong>XAMPP:</strong> PHP 8.2.12 + MySQL 10.4.32/li>
+  <li><strong>XAMPP:</strong> PHP 8.2.12 + MySQL 10.4.32</li>
   <li><strong>Database:</strong> MySQL 10.4.32</li>
 </ul>
 
