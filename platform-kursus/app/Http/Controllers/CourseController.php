@@ -17,25 +17,26 @@ class CourseController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $query = Course::with(['teacher'])
+            ->withCount(['students', 'contents'])
+            ->latest();
+        $context   = 'default';
+        $backRoute = null;
 
         if ($user->role === 'admin') {
-            // admin lihat semua course
-            $courses = Course::with('teacher')->latest()->paginate(10);
+            $courses  = $query->paginate(10);
+            $context  = 'admin-all';
+            $backRoute = 'dashboard';
         } elseif ($user->role === 'teacher') {
-            // teacher cuma lihat course yang dia ajar
-            $courses = Course::with('teacher')
-                ->where('teacher_id', $user->id)
-                ->latest()
-                ->paginate(10);
+            $courses  = $query->where('teacher_id', $user->id)->paginate(10);
+            $context  = 'teacher-own';
+            $backRoute = 'courses.catalog'; 
         } else {
-            // student (atau role lain) lihat cuma course yang active
-            $courses = Course::with('teacher')
-                ->where('status', 'active')
-                ->latest()
-                ->paginate(10);
+            $courses  = $query->where('status', 'active')->paginate(10);
+            $context  = 'student-active';
+            $backRoute = 'courses.catalog'; 
         }
-
-        return view('courses.index', compact('courses', 'user'));
+        return view('courses.index', compact('courses', 'user', 'context', 'backRoute'));
     }
 
     /**
@@ -100,9 +101,33 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(Request $request, Course $course)
     {
-        //
+        $user = Auth::user();
+        $referer = $request->headers->get('referer');
+        $backRoute = 'courses.catalog';
+
+        if ($referer && str_contains($referer, '/dashboard/courses')) {
+            $backRoute = 'courses.index';
+        }
+
+        $course->load(['teacher', 'category', 'contents', 'students']);
+
+        $totalLessons   = $course->contents->count();
+        $isStudent      = $user && $user->role === 'student';
+        $isEnrolled     = false;
+        $completedCount = 0;
+        $progress       = 0;
+
+        return view('courses.show', compact(
+            'course',
+            'backRoute',
+            'totalLessons',
+            'isStudent',
+            'isEnrolled',
+            'completedCount',
+            'progress'
+        ));
     }
 
     /**
@@ -112,18 +137,18 @@ class CourseController extends Controller
     {
         $user = Auth::user();
 
-    if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
-        abort(403, 'You are not allowed to edit this course.');
-    }
+        if ($user->role === 'teacher' && $course->teacher_id !== $user->id) {
+            abort(403, 'You are not allowed to edit this course.');
+        }
 
-    $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
 
-    $teachers = [];
-    if ($user->role === 'admin') {
-        $teachers = User::where('role', 'teacher')->orderBy('name')->get();
-    }
+        $teachers = [];
+        if ($user->role === 'admin') {
+            $teachers = User::where('role', 'teacher')->orderBy('name')->get();
+        }
 
-    return view('courses.edit', compact('course', 'user', 'categories', 'teachers'));
+        return view('courses.edit', compact('course', 'user', 'categories', 'teachers'));
     }
 
     /**

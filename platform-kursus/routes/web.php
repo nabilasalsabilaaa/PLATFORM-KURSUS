@@ -51,6 +51,10 @@ Route::middleware(['auth', 'role:admin,teacher'])
         Route::resource('courses', CourseController::class);
     });
 
+Route::middleware(['auth', 'role:teacher'])
+    ->get('/dashboard/my-courses', [CourseController::class, 'index'])
+    ->name('teacher.courses.index');
+
 // categori (adm)
 Route::middleware(['auth', 'role:admin'])
     ->prefix('dashboard')

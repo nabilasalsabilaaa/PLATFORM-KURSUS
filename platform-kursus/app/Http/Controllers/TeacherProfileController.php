@@ -13,18 +13,8 @@ class TeacherProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+            return redirect()->route('courses.index');
 
-        if ($user -> role !== 'teacher') {
-            abort(403, 'only teacher can access this page');
-        }
-
-        $courses = $user->taughtCourses()
-            ->withCount('students')
-            ->withCount('contents')
-            ->get();
-
-        return view('profile.teacher', compact('user', 'courses'));
     }
 
     public function courseStudents(Course $course)
