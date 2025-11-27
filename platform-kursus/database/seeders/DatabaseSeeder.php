@@ -25,24 +25,28 @@ class DatabaseSeeder extends Seeder
             'password'  => Hash::make('12345678'),
             'role'      => 'admin',
         ]);
+
         $teacher1 = User::create([
             'name'      => 'teacher1',
             'email'     => 'teacher1@gmail.com',
             'password'  => Hash::make('12345678'),
             'role'      => 'teacher',
         ]);
+
         $teacher2 = User::create([
             'name'      => 'teacher2',
             'email'     => 'teacher2@gmail.com',
             'password'  => Hash::make('12345678'),
             'role'      => 'teacher',
         ]);
+
         $student1 = User::create([
             'name'      => 'student1',
             'email'     => 'student1@gmail.com',
             'password'  => Hash::make('12345678'),
             'role'      => 'student',
         ]);
+
         $student2 = User::create([
             'name'      => 'student2',
             'email'     => 'student2@gmail.com',
@@ -53,99 +57,128 @@ class DatabaseSeeder extends Seeder
         $categories = [];
 
         $categories['web'] = Category::create([
-            'name'      => 'Web Development',
+            'name' => 'Web Development',
         ]);
+
         $categories['uiux'] = Category::create([
-            'name'      => 'UI/UX Design',
+            'name' => 'UI/UX Design',
         ]);
+
         $categories['tanah'] = Category::create([
-            'name'      => 'Ilmu Tanah',
+            'name' => 'Ilmu Tanah',
         ]);
+
         $categories['datasci'] = Category::create([
-            'name'      => 'Data Sains',
+            'name' => 'Data Sains',
         ]);
+
         $categories['math'] = Category::create([
-            'name'      => 'Matematika',
+            'name' => 'Matematika',
         ]);
+
         $categories['hut'] = Category::create([
-            'name'      => 'Pengantar Kehutanan',
+            'name' => 'Pengantar Kehutanan',
         ]);
 
-        $course1 = Course::create([
-            'title'       => 'Laravel Dasar untuk Pemula',
-            'description' => 'Belajar dasar-dasar Laravel untuk membuat web',
-            'start_date'  => now(),
-            'end_date'    => now()->addMonth(),
-            'status'      => 'active',
-            'teacher_id'  => $teacher1->id,
-            'category_id' => $categories['web']->id,
-        ]);
-        $course2 = Course::create([
-            'title'       => 'Desain UI/UX untuk Aplikasi Mobile',
-            'description' => 'Membahas prinsip dasar desain UI/UX yang baik.',
-            'start_date'  => now(),
-            'end_date'    => now()->addWeeks(6),
-            'status'      => 'active',
-            'teacher_id'  => $teacher2->id,
-            'category_id' => $categories['uiux']->id,
-        ]);
-        $course3 = Course::create([
-            'title'       => 'Statistika Dasar untuk Data Science',
-            'description' => 'Materi dasar statistika yang sering dipakai di data science.',
-            'start_date'  => now(),
-            'end_date'    => now()->addWeeks(8),
-            'status'      => 'inactive',
-            'teacher_id'  => $teacher1->id,
-            'category_id' => $categories['datasci']->id,
-        ]);
+        $coursesData = [
+            'web' => [
+                [
+                    'title'       => 'Laravel Dasar untuk Pemula',
+                    'description' => 'Belajar dasar-dasar Laravel untuk membuat aplikasi web.',
+                    'teacher'     => $teacher1,
+                    'status'      => 'active',
+                    'slug'        => 'laravel-dasar',
+                ],
+                [
+                    'title'       => 'Fundamental HTML & CSS',
+                    'description' => 'Mengenal struktur HTML dan styling dasar dengan CSS.',
+                    'teacher'     => $teacher1,
+                    'status'      => 'active',
+                    'slug'        => 'html-css-fundamental',
+                ],
+            ],
 
-        Content::create([
-            'course_id' => $course1->id,
-            'title'     => 'Pengenalan Laravel',
-            'body'      => 'Apa itu Laravel, kenapa digunakan, dan overview ekosistemnya.',
-            'order'     => 1,
-        ]);
+            'uiux' => [
+                [
+                    'title'       => 'Desain UI/UX untuk Aplikasi Mobile',
+                    'description' => 'Membahas prinsip dasar desain UI/UX yang baik untuk mobile.',
+                    'teacher'     => $teacher2,
+                    'status'      => 'active',
+                    'slug'        => 'uiux-mobile',
+                ],
+                [
+                    'title'       => 'Wireframing & Prototyping',
+                    'description' => 'Belajar membuat wireframe dan prototype interaktif.',
+                    'teacher'     => $teacher2,
+                    'status'      => 'active',
+                    'slug'        => 'wireframing-prototyping',
+                ],
+            ],
 
-        Content::create([
-            'course_id' => $course1->id,
-            'title'     => 'Instalasi Laravel',
-            'body'      => 'Cara install Laravel menggunakan Composer, setting .env, dll.',
-            'order'     => 2,
-        ]);
+            'tanah' => [
+                [
+                    'title'       => 'Pengantar Ilmu Tanah',
+                    'description' => 'Dasar-dasar sifat fisik dan kimia tanah.',
+                    'teacher'     => $teacher1,
+                    'status'      => 'active',
+                    'slug'        => 'pengantar-ilmu-tanah',
+                ],
+            ],
 
-        Content::create([
-            'course_id' => $course1->id,
-            'title'     => 'Routing Dasar',
-            'body'      => 'Belajar membuat route sederhana dan menghubungkannya ke controller.',
-            'order'     => 3,
-        ]);
+            'datasci' => [
+                [
+                    'title'       => 'Statistika Dasar untuk Data Science',
+                    'description' => 'Materi dasar statistika yang sering dipakai di data science.',
+                    'teacher'     => $teacher1,
+                    'status'      => 'inactive',
+                    'slug'        => 'statistika-data-science',
+                ],
+            ],
 
-        Content::create([
-            'course_id' => $course2->id,
-            'title'     => 'Dasar UI/UX',
-            'body'      => 'Konsep dasar user interface dan user experience.',
-            'order'     => 1,
-        ]);
+            'math' => [
+                [
+                    'title'       => 'Aljabar Linear Dasar',
+                    'description' => 'Vektor, matriks, dan operasi dasar aljabar linear.',
+                    'teacher'     => $teacher2,
+                    'status'      => 'active',
+                    'slug'        => 'aljabar-linear',
+                ],
+            ],
 
-        Content::create([
-            'course_id' => $course2->id,
-            'title'     => 'Wireframing',
-            'body'      => 'Membuat wireframe sederhana sebagai kerangka desain.',
-            'order'     => 2,
-        ]);
+            'hut' => [
+                [
+                    'title'       => 'Pengantar Kehutanan',
+                    'description' => 'Mengenal konsep dasar kehutanan dan ekosistem hutan.',
+                    'teacher'     => $teacher2,
+                    'status'      => 'active',
+                    'slug'        => 'pengantar-kehutanan',
+                ],
+            ],
+        ];
 
-        Content::create([
-            'course_id' => $course3->id,
-            'title'     => 'Apa itu Data Science?',
-            'body'      => 'Pengantar konsep data science dan perannya.',
-            'order'     => 1,
-        ]);
+        foreach ($coursesData as $catKey => $courseList) {
+            foreach ($courseList as $courseInfo) {
 
-        Content::create([
-            'course_id' => $course3->id,
-            'title'     => 'Statistika Deskriptif',
-            'body'      => 'Rata-rata, median, modus, dan ukuran pemusatan lainnya.',
-            'order'     => 2,
-        ]);
+                $course = Course::create([
+                    'title'       => $courseInfo['title'],
+                    'description' => $courseInfo['description'],
+                    'start_date'  => now(),
+                    'end_date'    => now()->addWeeks(6),
+                    'status'      => $courseInfo['status'],
+                    'teacher_id'  => $courseInfo['teacher']->id,
+                    'category_id' => $categories[$catKey]->id,
+                ]);
+
+                for ($i = 1; $i <= 2; $i++) {
+                    Content::create([
+                        'course_id'  => $course->id,
+                        'title'      => "{$courseInfo['title']} - Lesson {$i}",
+                        'body'       => "Materi untuk {$courseInfo['title']} - Lesson {$i}.",
+                        'order'      => $i,
+                        'video_path' => "videos/{$courseInfo['slug']}_lesson{$i}.mp4",
+                    ]);
+                }
+            }
+        }
     }
 }

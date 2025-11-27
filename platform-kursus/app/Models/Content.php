@@ -12,11 +12,12 @@ class Content extends Model
     protected $fillable = [
         'course_id',
         'title',
-        'body',
-        'order',
-        'content_type',
-        'duration',
         'description',
+        'body',
+        'content_type',
+        'video_path',
+        'duration',
+        'order',
     ];
 
     public function course()
@@ -48,13 +49,37 @@ class Content extends Model
 
     public function getVideoUrl()
     {
-        if ($this->isVideo()) {
-            if (filter_var($this->body, FILTER_VALIDATE_URL)) {
-                return $this->body; 
-            }
-            return asset('storage/' . $this->body); 
+        if (! $this->isVideo()) {
+            return null;
         }
-        return null;
+
+        $video = $this->body;
+
+        if (str_contains($video, 'youtube.com/watch')) {
+            $videoId = parse_url($video, PHP_URL_QUERY);
+            parse_str($videoId, $params);
+            if (isset($params['v'])) {
+                return "https://www.youtube.com/embed/" . $params['v'];
+            }
+        }
+
+        if (str_contains($video, 'youtu.be')) {
+            $parts = explode('/', $video);
+            $id = end($parts);
+            return "https://www.youtube.com/embed/" . $id;
+        }
+
+        if (str_contains($video, 'youtube.com/shorts')) {
+            $parts = explode('/', $video);
+            $id = end($parts);
+            return "https://www.youtube.com/embed/" . $id;
+        }
+
+        if (!filter_var($video, FILTER_VALIDATE_URL)) {
+            return asset('storage/' . ltrim($video, '/'));
+        }
+
+        return $video;
     }
 
     public function getQuizQuestions()

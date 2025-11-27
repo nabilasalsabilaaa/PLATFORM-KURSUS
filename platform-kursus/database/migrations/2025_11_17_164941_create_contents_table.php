@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->longText('body')->nullable(); 
             $table->string('content_type')->default('text');
+            $table->string('video_path')->nullable();
             $table->string('duration')->nullable();
             $table->unsignedInteger('order')->default(1);
             $table->timestamps();
