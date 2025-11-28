@@ -38,27 +38,13 @@
     </script>
 </head>
 <body class="bg-primary-50 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+    <div class="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row-reverse">
         <div class="hidden md:flex md:w-1/2 relative bg-gradient-to-br from-primary-500 to-secondary-500 overflow-hidden">
             <img 
-                src=""
+                src="{{ asset('images/regis.png')}}"
                 alt="Foto register" 
                 class="w-full h-full object-cover opacity-90"
             >
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-
-            <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold">Chills Kursus</h1>
-                </div>
-                
-                <div class="mb-12">
-                    <h2 class="text-3xl font-bold mb-4">Belajar Menyenangkan bersama Chills Kursus</h2>
-                    <p class="text-lg max-w-md">
-                        Ayo bergabung dan mulai perjalanan belajar yang menyenangkan bersama kami!
-                    </p>
-                </div>
-            </div>
         </div>
 
         <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
@@ -221,6 +207,12 @@
                             Facebook
                         </a>
                     </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="{{ url('/') }}" 
+                    class="text-xs text-gray-500 hover:text-primary-500 transition">
+                        <i class="fas fa-arrow-left mr-1"></i> Kembali ke Home
+                    </a>
                 </div>
             </div>
         </div>

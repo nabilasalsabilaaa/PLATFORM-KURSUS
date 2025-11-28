@@ -41,23 +41,10 @@
     <div class="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
         <div class="hidden md:flex md:w-1/2 relative bg-gradient-to-br from-primary-500 to-secondary-500 overflow-hidden">
             <img 
-                src="" 
+                src="{{ asset('images/login.png') }}" 
                 alt="foto login" 
                 class="w-full h-full object-cover opacity-90"
             >
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div class="absolute inset-0 p-8 flex flex-col justify-between text-white">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold">Chills Kursus</h1>
-                </div>
-                
-                <div class="mb-12">
-                    <h2 class="text-3xl font-bold mb-4">Selamat Datang Kembali!</h2>
-                    <p class="text-lg max-w-md">
-                        Masuk ke akun Anda untuk melanjutkan pembelajaran
-                    </p>
-                </div>
-            </div>
         </div>
         <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             
@@ -197,6 +184,12 @@
                             Facebook
                         </a>
                     </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="{{ url('/') }}" 
+                    class="text-xs text-gray-500 hover:text-primary-500 transition">
+                        <i class="fas fa-arrow-left mr-1"></i> Kembali ke Home
+                    </a>
                 </div>
             </div>
         </div>
