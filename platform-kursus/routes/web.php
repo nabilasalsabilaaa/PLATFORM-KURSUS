@@ -104,8 +104,6 @@ Route::middleware(['auth', 'role:student'])
     ->name('profile.student');
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {
-    Route::get('/profile/teacher', [TeacherProfileController::class, 'index'])
-        ->name('profile.teacher');
 
     Route::get('/teacher/courses/{course}/students', [TeacherProfileController::class, 'courseStudents'])
         ->name('teacher.courses.students');
@@ -117,3 +115,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/test-confirm', function () {
+    return redirect()->route('password.confirm');
+})->middleware('auth');

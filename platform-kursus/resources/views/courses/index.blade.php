@@ -256,7 +256,7 @@
             @endif
         </div>
         @if (in_array($user->role, ['admin', 'teacher']))
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-{{ $user->role === 'admin' ? '3' : '2' }} gap-6">
             <a href="{{ route('courses.create') }}" 
                 class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300 border-l-4 border-primary-500">
                 <div class="flex items-center">

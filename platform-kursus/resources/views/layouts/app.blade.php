@@ -42,9 +42,11 @@
     <style>
         .nav-link {
             position: relative;
-            padding: 8px 12px;
+            padding: 4px 8px;      
             color: #4B5563;
             font-weight: 500;
+            font-size: 0.82rem;       
+            white-space: nowrap;      
             text-decoration: none;
             transition: color 0.3s ease;
         }
@@ -108,7 +110,7 @@
                 </div>
             </div>
 
-            <div class="hidden md:flex items-center space-x-1" id="nav-links">
+            <div class="hidden md:flex items-center space-x-1 " id="nav-links">
                 @auth
                     <a href="{{ route('dashboard') }}" 
                         class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
@@ -126,8 +128,8 @@
                 @auth
                     @if (Auth::user()->role === 'teacher')
                         <a href="{{ route('courses.index') }}" 
-                            class="nav-link {{ request()->routeIs('profile.teacher') ? 'active' : '' }}"
-                            data-route="profile.teacher">
+                            class="nav-link {{ request()->routeIs('courses.index') ? 'active' : '' }}"
+                            data-route="courses.index">
                             My Courses
                         </a>
                     @endif
@@ -150,6 +152,11 @@
                             class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}"
                             data-route="categories.index">
                             Categories
+                        </a>
+                        <a href="{{ route('courses.index') }}" 
+                            class="nav-link {{ request()->routeIs('courses.index') ? 'active' : '' }}"
+                            data-route="courses.index">
+                            Courses Management
                         </a>
                     @endif
                 @endauth
@@ -210,8 +217,8 @@
 
                 @auth
                     @if (Auth::user()->role === 'teacher')
-                        <a href="{{ route('profile.teacher') }}" 
-                            class="mobile-nav-link {{ request()->routeIs('profile.teacher') ? 'active' : '' }}">
+                        <a href="{{ route('courses.index') }}" 
+                            class="mobile-nav-link {{ request()->routeIs('courses.index') ? 'active' : '' }}">
                             My Courses
                         </a>
                     @endif
@@ -231,6 +238,10 @@
                         <a href="{{ route('categories.index') }}" 
                             class="mobile-nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
                             Categories
+                        </a>
+                        <a href="{{ route('courses.index') }}" 
+                            class="mobile-nav-link {{ request()->routeIs('courses.index') ? 'active' : '' }}">
+                            Courses Management
                         </a>
                     @endif
 
