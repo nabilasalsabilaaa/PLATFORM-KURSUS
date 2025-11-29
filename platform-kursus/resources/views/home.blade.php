@@ -113,7 +113,7 @@
                         rounded-3xl px-4 py-3 md:px-6 md:py-4
                         shadow-soft-card backdrop-blur-md
                     ">
-                        <form method="GET" action="{{ route('home') }}" class="flex items-center gap-3">
+                        <form method="GET" action="{{ route('home') }}#courses" class="flex items-center gap-3">
                             <div class="flex-1 flex items-center gap-3">
                                 <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-gray-600">
                                     <i class="fas fa-search text-sm"></i>
@@ -123,7 +123,7 @@
                                     name="search"
                                     placeholder="Search anything..."
                                     value="{{ $search }}"
-                                    class="w-full bg-transparent border-none focus:outline-none text-sm md:text-base text-white placeholder-gray-600"
+                                    class="w-full bg-transparent border-none focus:outline-none text-sm md:text-base text-black placeholder-gray-600"
                                 >
                             </div>
 
@@ -147,7 +147,7 @@
                                 Belajar kapan saja, di mana saja.
                             </h3>
                             <p class="text-xs text-primary-50/90 max-w-xs">
-                                Akses materi video, latihan, dan proyek praktis yang dirancang untuk level up your skill.
+                                Akses materi video dan latihan yang dirancang untuk level up your skill.
                             </p>
                         </div>
                         <div class="flex gap-3 text-xs">
@@ -167,7 +167,7 @@
     </section>
 
     <main class="max-w-6xl mx-auto px-6 pb-14 space-y-10">
-        <section class="space-y-5">
+        <section id="popular-courses" class="space-y-5">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs uppercase tracking-[0.18em] text-primary-600/70 mb-1">Popular Courses</p>
@@ -193,8 +193,17 @@
                         <div class="bg-white rounded-3xl overflow-hidden shadow-soft-card hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
                                 data-aos="fade-up"
                                 data-aos-delay="{{ 100 + ($index % 5) * 80 }}">
-                            <div class="relative h-36 bg-gradient-to-tr from-primary-500 to-secondary-500">
-                                <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_top,_#ffffff_0,_transparent_55%)]"></div>
+                            <div class="relative h-36 overflow-hidden">
+                                @if($course->thumbnail)
+                                    <img
+                                        src="{{ asset('storage/' . $course->thumbnail) }}"
+                                        alt="Thumbnail {{ $course->title }}"
+                                        class="w-full h-full object-cover"
+                                    >
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-tr from-primary-500 to-secondary-500"></div>
+                                @endif
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
                                 <div class="absolute top-3 left-3 bg-white/90 text-primary-500 px-2.5 py-1 rounded-full text-[11px] font-semibold">
                                     {{ $course->category->name ?? 'Umum' }}
@@ -205,11 +214,10 @@
                                     <span>{{ $course->students_count }} Peserta</span>
                                 </div>
 
-                                <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/15 border border-white/40 flex items-center justify-center text-[11px]">
+                                <div class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/15 border border-white/40 flex items-center justify-center text-[11px] text-white">
                                     <i class="fas fa-play"></i>
                                 </div>
                             </div>
-
                             <div class="p-4 flex flex-col gap-2">
                                 <h3 class="font-semibold text-sm md:text-base text-gray-900 line-clamp-2">
                                     {{ $course->title }}
@@ -305,14 +313,23 @@
                                     hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                                 data-aos="fade-up"
                                 data-aos-delay="{{ 50 + ($index % 6) * 60 }}">
-                            <div class="relative h-28 bg-gradient-to-tr from-primary-500 to-secondary-500">
-                                <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_top,_#ffffff_0,_transparent_55%)]"></div>
+                            <div class="relative h-28 overflow-hidden">
+                                @if($course->thumbnail)
+                                    <img
+                                        src="{{ asset('storage/' . $course->thumbnail) }}"
+                                        alt="Thumbnail {{ $course->title }}"
+                                        class="w-full h-full object-cover"
+                                    >
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-tr from-primary-500 to-secondary-500"></div>
+                                @endif
+
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
 
                                 <div class="absolute top-2 left-2 bg-white/90 text-primary-500 px-2 py-0.5 rounded-full text-[10px] font-semibold">
                                     {{ $course->category->name ?? 'Umum' }}
                                 </div>
                             </div>
-
                             <div class="p-3 flex flex-col gap-1.5">
                                 <h3 class="font-semibold text-sm text-gray-900 line-clamp-2">
                                     {{ $course->title }}
@@ -345,7 +362,7 @@
             @endif
         </section>
 
-        <section class="space-y-5">
+        <section id="faq" class="space-y-5">
             <div class="text-center mb-3">
                 <h2 class="text-xl md:text-2xl font-bold text-gray-900">F A Q</h2>
                 <p class="text-sm text-gray-500 mt-1">
@@ -372,81 +389,156 @@
                 <details class="group border border-neutral-100 rounded-2xl px-4 py-3">
                     <summary class="flex items-center justify-between cursor-pointer list-none">
                         <span class="text-sm font-semibold text-gray-800">
-                            Apakah semua course berbayar?
+                            Apakah saja metode pembelajaran di tiap courses?
                         </span>
                         <span class="ml-3 rounded-full w-7 h-7 flex items-center justify-center bg-primary-50 text-primary-500 text-xs group-open:rotate-180 transition-transform">
                             <i class="fas fa-chevron-down"></i>
                         </span>
                     </summary>
                     <p class="mt-3 text-sm text-gray-600">
-                        Tidak. Beberapa course tersedia secara gratis, dan sebagian lainnya berbayar. Kamu bisa menggunakan
-                        filter <strong>Jenis</strong> pada bagian filter untuk menampilkan course gratis saja.
+                        Metode pembelajaran bervariasi tergantung pada course yang daimbil, namun yang disediakan yaitu berupa
+                        text dan video materi baik dari source internal ataupun dari youtube, serta kuiz.
                     </p>
                 </details>
 
                 <details class="group border border-neutral-100 rounded-2xl px-4 py-3">
                     <summary class="flex items-center justify-between cursor-pointer list-none">
                         <span class="text-sm font-semibold text-gray-800">
-                            Apakah saya akan mendapatkan sertifikat setelah menyelesaikan course?
+                            Apakah setelah menerima materi saya bisa rating courses nya?
                         </span>
                         <span class="ml-3 rounded-full w-7 h-7 flex items-center justify-center bg-primary-50 text-primary-500 text-xs group-open:rotate-180 transition-transform">
                             <i class="fas fa-chevron-down"></i>
                         </span>
                     </summary>
                     <p class="mt-3 text-sm text-gray-600">
-                        Ya, untuk course tertentu kamu akan mendapatkan sertifikat penyelesaian yang bisa digunakan
-                        sebagai bukti belajar dan ditambahkan ke CV atau profil profesionalmu.
+                        Tentu saja bisa! Setelah menyelesaikan course, kamu akan diberikan opsi untuk memberikan rating
+                        dan ulasan mengenai course tersebut. Feedback dari kamu sangat berharga bagi kami untuk
+                        meningkatkan kualitas course di masa mendatang.
                     </p>
                 </details>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white pt-10 pb-6 mt-4">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h3 class="text-lg font-bold mb-3">Chills Kursus</h3>
+    <footer class="bg-gray-900 text-white mt-4">
+        <div class="max-w-6xl mx-auto px-6 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="{{ asset('images/logo.png') }}"
+                            alt="Logo Chills Kursus"
+                            class="w-12 h-12 object-contain">
+                        <span class="text-xl font-bold">Chills Kursus</span>
+                    </div>
                     <p class="text-gray-400 text-sm">
-                        Platform kursus online terpercaya untuk meningkatkan skill dan karir Anda.
+                        Platform kursus online untuk bantu kamu belajar lebih terarah dan menyenangkan.
                     </p>
                 </div>
-
-                <div>
-                    <h4 class="font-semibold mb-3 text-sm">Tautan Cepat</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Kursus</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Kontak</a></li>
+                <div class="lg:col-span-1">
+                    <h4 class="font-semibold mb-4 text-base">Quick Actions</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li>
+                            <a href="{{ route('home') }}" class="hover:text-white transition-colors flex items-center">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#popular-courses" class="hover:text-white transition-colors flex items-center">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                                Kursus Populer
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#courses" class="hover:text-white transition-colors flex items-center">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                                Semua Kursus
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#faq" class="hover:text-white transition-colors flex items-center">
+                                <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                                FAQ
+                            </a>
+                        </li>
                     </ul>
                 </div>
-
-                <div>
-                    <h4 class="font-semibold mb-3 text-sm">Kategori</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        @foreach ($categories->take(5) as $cat)
-                            <li><a href="#" class="hover:text-white transition-colors">{{ $cat->name }}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold mb-3 text-sm">Ikuti Kami</h4>
-                    <div class="flex gap-4 text-gray-400 text-lg">
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                <div class="lg:col-span-1">
+                    <h4 class="font-semibold mb-4 text-base">Info Kontak</h4>
+                    <div class="space-y-3 text-sm text-gray-400 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3 text-primary-500"></i>
+                            <span>+62 812-3456-7890</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary-500"></i>
+                            <span>chillskursus@gmail.com</span>
+                        </div>
                     </div>
+                    <br>
+                    <h4 class="font-semibold mb-4 text-base">Follow Us</h4>
+                    <div class="flex gap-5 text-2xl">
+                        <a href="#"
+                        class="transition-transform hover:-translate-y-1"
+                        aria-label="Facebook">
+                            <i class="fab fa-facebook-f text-[#1877F2]"></i>
+                        </a>
+                        <a href="#"
+                        class="transition-transform hover:-translate-y-1"
+                        aria-label="Twitter / X">
+                            <i class="fab fa-twitter text-[#1DA1F2]"></i>
+                        </a>
+                        <a href="#"
+                        class="transition-transform hover:-translate-y-1"
+                        aria-label="Instagram">
+                            <i class="fab fa-instagram text-[#E1306C]"></i>
+                        </a>
+                        <a href="#"
+                        class="transition-transform hover:-translate-y-1"
+                        aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in text-[#0A66C2]"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-1">
+                    <h4 class="font-semibold mb-4 text-base">Contact Us</h4>
+                    <form action="#" method="POST" class="space-y-3">
+                        @csrf
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Nama"
+                            class="w-full px-3 py-2 rounded-lg bg-gray-800 text-sm text-gray-100 border border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        >
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            class="w-full px-3 py-2 rounded-lg bg-gray-800 text-sm text-gray-100 border border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        >
+                        <textarea
+                            name="message"
+                            rows="3"
+                            placeholder="Pesan / saran / pengaduan..."
+                            class="w-full px-3 py-2 rounded-lg bg-gray-800 text-sm text-gray-100 border border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        ></textarea>
+                        <button
+                            type="button" disabled
+                            class="w-full inline-flex justify-center items-center gap-2 px-3 py-2 rounded-lg bg-primary-500 hover:bg-primary-600 text-sm font-medium transition-colors cursor-not-allowed"
+                        >
+                            <i class="fas fa-paper-plane"></i>
+                            Kirim Pesan
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 pt-4 text-center text-gray-500 text-xs">
+            <div class="border-t border-gray-800 pt-6 mt-8 text-center text-gray-500 text-sm">
                 &copy; 2025 Chills Kursus Platform. All rights reserved.
             </div>
         </div>
     </footer>
+
 
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
