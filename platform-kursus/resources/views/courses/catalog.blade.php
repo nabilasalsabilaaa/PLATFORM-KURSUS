@@ -184,7 +184,7 @@
 
     @guest
         <div class="mt-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl p-8 text-center text-white">
-            <h2 class="text-2xl font-bold mb-4">Gimana? Ready to Start Learning?</h2>
+            <h2 class="text-2xl font-bold mb-4">Ready to Start Learning?</h2>
             <p class="mb-6 opacity-90">Ayo bergabung dan belajar bersama jutaan pelajar di Chills Kursus</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ route('register') }}" 
