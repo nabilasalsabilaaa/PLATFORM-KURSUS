@@ -14,6 +14,7 @@ class LessonController extends Controller
      */
     public function show(Course $course, Content $content)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($content->course_id !== $course->id) {
@@ -75,6 +76,7 @@ class LessonController extends Controller
 
     public function markAsDone(Course $course, Content $content)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->role !== 'student') {

@@ -14,6 +14,7 @@ class EnrollmentController extends Controller
      */
     public function store(Request $request, Course $course) 
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->role !== 'student') {
@@ -33,6 +34,7 @@ class EnrollmentController extends Controller
      */
     public function destroy(Course $course)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         if ($user->role !== 'student') {
             abort(403, 'Only students can unenroll courses.');
