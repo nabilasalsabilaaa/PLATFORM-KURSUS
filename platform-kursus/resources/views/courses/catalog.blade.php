@@ -3,6 +3,7 @@
 @section('title', 'Course Catalog - Chills Kursus')
 
 @section('content')
+
 <div class="container mx-auto px-4 py-6">
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Course Catalog</h1>
@@ -198,6 +199,7 @@
         </div>
     @endguest
 </div>
+
 
 <style>
     .pagination {

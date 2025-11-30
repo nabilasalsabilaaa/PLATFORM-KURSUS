@@ -34,7 +34,11 @@ class Content extends Model
 
     public function isVideo()
     {
-        return $this->content_type === 'video';
+        return $this->content_type === 'video'
+        && (
+            !empty($this->video_path) ||
+            filter_var($this->body, FILTER_VALIDATE_URL)
+        );
     }
 
     public function isText()
@@ -44,7 +48,7 @@ class Content extends Model
 
     public function isQuiz()
     {
-        return false;
+        return $this->content_type === 'quiz';
     }
 
     public function getVideoUrl()
@@ -53,33 +57,31 @@ class Content extends Model
             return null;
         }
 
-        $video = $this->body;
+        $video = $this->video_path ?: $this->body;
+        if (!$video) {
+            return null;
+        }
 
-        if (str_contains($video, 'youtube.com/watch')) {
-            $videoId = parse_url($video, PHP_URL_QUERY);
-            parse_str($videoId, $params);
-            if (isset($params['v'])) {
-                return "https://www.youtube.com/embed/" . $params['v'];
+        if (filter_var($video, FILTER_VALIDATE_URL)) {
+
+            if (str_contains($video, 'youtube.com/watch')) {
+                $query = parse_url($video, PHP_URL_QUERY);
+                parse_str($query, $params);
+                if (!empty($params['v'])) {
+                    return 'https://www.youtube.com/embed/' . $params['v'];
+                }
             }
+
+            if (str_contains($video, 'youtu.be') || str_contains($video, 'youtube.com/shorts')) {
+                $parts = explode('/', rtrim($video, '/'));
+                $id = end($parts);
+                return 'https://www.youtube.com/embed/' . $id;
+            }
+
+            return $video;
         }
 
-        if (str_contains($video, 'youtu.be')) {
-            $parts = explode('/', $video);
-            $id = end($parts);
-            return "https://www.youtube.com/embed/" . $id;
-        }
-
-        if (str_contains($video, 'youtube.com/shorts')) {
-            $parts = explode('/', $video);
-            $id = end($parts);
-            return "https://www.youtube.com/embed/" . $id;
-        }
-
-        if (!filter_var($video, FILTER_VALIDATE_URL)) {
-            return asset('storage/' . ltrim($video, '/'));
-        }
-
-        return $video;
+        return asset(ltrim($video, '/'));
     }
 
     public function getQuizQuestions()

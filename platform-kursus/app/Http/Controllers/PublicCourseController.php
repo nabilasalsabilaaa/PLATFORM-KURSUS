@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PublicCourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search     = trim($request->input('search'));
@@ -71,9 +68,6 @@ class PublicCourseController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Course $course)
     {
         $user = Auth::user();

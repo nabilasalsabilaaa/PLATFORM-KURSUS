@@ -13,17 +13,16 @@ class TeacherProfileController extends Controller
      */
     public function index()
     {
-            return redirect()->route('courses.index');
-
+        return redirect()->route('courses.index');
     }
 
     public function courseStudents(Course $course)
     {
         $user = Auth::user();
 
-        if ($user->role !== 'teacher' || $course->teacher_id !== $user->id) {
+        if ($user->role !== 'admin' && ($user->role !== 'teacher' || $course->teacher_id !== $user->id)) {
             abort(403, 'You are not allowed to see this course.');
-        }
+        }   
 
         $totalLessons = $course->contents()->count();
 
@@ -51,53 +50,5 @@ class TeacherProfileController extends Controller
             'studentProgress' => $studentProgress,
             'totalLessons'    => $totalLessons,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

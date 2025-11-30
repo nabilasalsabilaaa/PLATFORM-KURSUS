@@ -9,7 +9,7 @@
             <p class="text-gray-600 mt-1">Update course information for "{{ $course->title }}"</p>
         </div>
         <a href="{{ route('courses.show', $course) }}" 
-           class="inline-flex items-center text-primary-500 hover:text-primary-600 transition duration-300">
+            class="inline-flex items-center text-primary-500 hover:text-primary-600 transition duration-300">
             <i class="fas fa-arrow-left mr-2"></i> Back to Course
         </a>
     </div>
@@ -209,7 +209,7 @@
                         </div>
                     @endif
                     <div class="pt-6 border-t border-neutral-100 flex justify-between items-center">
-                        <a href="{{ route('courses.show', $course) }}" 
+                        <a href="{{ route('courses.index', $course) }}" 
                             class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-300">
                             <i class="fas fa-times mr-2"></i> Cancel
                         </a>

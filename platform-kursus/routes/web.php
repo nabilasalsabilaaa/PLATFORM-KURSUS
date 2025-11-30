@@ -26,7 +26,6 @@ Route::get('/courses/{course}/detail', [PublicCourseController::class, 'show'])
 Route::get('/courses/{course}', [PublicCourseController::class, 'show'])
     ->name('courses.show');
     
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // auth/profile
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -69,15 +68,21 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
     Route::get('courses/{course}/contents/create', [ContentController::class, 'create'])
         ->name('contents.create');
+
     Route::post('courses/{course}/contents', [ContentController::class, 'store'])
         ->name('contents.store');
 
     Route::get('courses/{course}/contents/{content}/edit', [ContentController::class, 'edit'])
         ->name('contents.edit');
+
     Route::put('courses/{course}/contents/{content}', [ContentController::class, 'update'])
         ->name('contents.update');
+
     Route::delete('courses/{course}/contents/{content}', [ContentController::class, 'destroy'])
         ->name('contents.destroy');
+
+    Route::get('/teacher/courses/{course}/students', [TeacherProfileController::class, 'courseStudents'])
+        ->name('teacher.courses.students');
 });
 
 //enroll/lesson (stud)
@@ -104,9 +109,6 @@ Route::middleware(['auth', 'role:student'])
     ->name('profile.student');
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {
-
-    Route::get('/teacher/courses/{course}/students', [TeacherProfileController::class, 'courseStudents'])
-        ->name('teacher.courses.students');
 });
 
 //user manage (adm)
@@ -115,7 +117,3 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-Route::get('/test-confirm', function () {
-    return redirect()->route('password.confirm');
-})->middleware('auth');

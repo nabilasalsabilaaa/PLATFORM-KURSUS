@@ -9,22 +9,6 @@ use Illuminate\Support\Facades\Auth;
 class EnrollmentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request, Course $course) 
@@ -41,30 +25,6 @@ class EnrollmentController extends Controller
         $user->enrolledCourses()->syncWithoutDetaching([$course->id]);
 
         return back()->with('success', 'You have enrolled in this course.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**

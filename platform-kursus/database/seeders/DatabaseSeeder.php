@@ -84,14 +84,14 @@ class DatabaseSeeder extends Seeder
             'web' => [
                 [
                     'title'       => 'Laravel Dasar untuk Pemula',
-                    'description' => 'Belajar dasar-dasar Laravel untuk membuat aplikasi web.',
+                    'description' => 'Belajar dasar-dasar Laravel untuk membuat aplikasi web',
                     'teacher'     => $teacher1,
                     'status'      => 'active',
                     'slug'        => 'laravel-dasar',
                 ],
                 [
                     'title'       => 'Fundamental HTML & CSS',
-                    'description' => 'Mengenal struktur HTML dan styling dasar dengan CSS.',
+                    'description' => 'Mengenal struktur HTML dan styling dasar dengan CSS',
                     'teacher'     => $teacher1,
                     'status'      => 'active',
                     'slug'        => 'html-css-fundamental',
@@ -101,14 +101,14 @@ class DatabaseSeeder extends Seeder
             'uiux' => [
                 [
                     'title'       => 'Desain UI/UX untuk Aplikasi Mobile',
-                    'description' => 'Membahas prinsip dasar desain UI/UX yang baik untuk mobile.',
+                    'description' => 'Membahas prinsip dasar desain UI/UX yang baik untuk mobile',
                     'teacher'     => $teacher2,
                     'status'      => 'active',
                     'slug'        => 'uiux-mobile',
                 ],
                 [
                     'title'       => 'Wireframing & Prototyping',
-                    'description' => 'Belajar membuat wireframe dan prototype interaktif.',
+                    'description' => 'Belajar membuat wireframe dan prototype interaktif',
                     'teacher'     => $teacher2,
                     'status'      => 'active',
                     'slug'        => 'wireframing-prototyping',
@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
             'tanah' => [
                 [
                     'title'       => 'Pengantar Ilmu Tanah',
-                    'description' => 'Dasar-dasar sifat fisik dan kimia tanah.',
+                    'description' => 'Dasar-dasar sifat fisik dan kimia tanah',
                     'teacher'     => $teacher1,
                     'status'      => 'active',
                     'slug'        => 'pengantar-ilmu-tanah',
@@ -128,7 +128,7 @@ class DatabaseSeeder extends Seeder
             'datasci' => [
                 [
                     'title'       => 'Statistika Dasar untuk Data Science',
-                    'description' => 'Materi dasar statistika yang sering dipakai di data science.',
+                    'description' => 'Materi dasar statistika yang sering dipakai di data science',
                     'teacher'     => $teacher1,
                     'status'      => 'inactive',
                     'slug'        => 'statistika-data-science',
@@ -138,7 +138,7 @@ class DatabaseSeeder extends Seeder
             'math' => [
                 [
                     'title'       => 'Aljabar Linear Dasar',
-                    'description' => 'Vektor, matriks, dan operasi dasar aljabar linear.',
+                    'description' => 'Vektor, matriks, dan operasi dasar aljabar linear',
                     'teacher'     => $teacher2,
                     'status'      => 'active',
                     'slug'        => 'aljabar-linear',
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
             'hut' => [
                 [
                     'title'       => 'Pengantar Kehutanan',
-                    'description' => 'Mengenal konsep dasar kehutanan dan ekosistem hutan.',
+                    'description' => 'Mengenal konsep dasar kehutanan dan ekosistem hutan',
                     'teacher'     => $teacher2,
                     'status'      => 'active',
                     'slug'        => 'pengantar-kehutanan',
@@ -176,6 +176,7 @@ class DatabaseSeeder extends Seeder
                         'body'       => "Materi untuk {$courseInfo['title']} - Lesson {$i}.",
                         'order'      => $i,
                         'video_path' => "videos/{$courseInfo['slug']}_lesson{$i}.mp4",
+                        'content_type'  => 'video', 
                     ]);
                 }
             }

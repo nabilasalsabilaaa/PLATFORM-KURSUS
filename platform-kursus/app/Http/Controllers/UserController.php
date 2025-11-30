@@ -17,9 +17,7 @@ class UserController extends Controller
         if (Auth::user()->role !== 'admin') {
             abort(403);
         }
-
         $users = User::orderBy('name')->paginate(10);
-
         return view('users.index', compact('users'));
     }
 
@@ -31,7 +29,6 @@ class UserController extends Controller
         if (Auth::user()->role !== 'admin') {
             abort(403);
         }
-
         return view('users.create');
     }
 
@@ -59,14 +56,6 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
     }
 
     /**

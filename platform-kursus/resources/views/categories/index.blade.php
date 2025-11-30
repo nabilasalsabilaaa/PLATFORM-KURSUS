@@ -4,55 +4,6 @@
 
 @section('content')
 
-<style>
-    .pagination {
-        display: flex;
-        justify-content: center;
-        list-style: none;
-        padding: 0;
-    }
-    
-    .pagination li {
-        margin: 0 2px;
-    }
-    
-    .pagination li a,
-    .pagination li span {
-        display: inline-block;
-        padding: 8px 12px;
-        border: 1px solid #e4e6ee;
-        border-radius: 6px;
-        color: #4B5563;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    
-    .pagination li a:hover {
-        background-color: #e8e4fb;
-        border-color: #716bf0;
-        color: #716bf0;
-    }
-    
-    .pagination li.active span {
-        background-color: #716bf0;
-        border-color: #716bf0;
-        color: white;
-    }
-    
-    .pagination li.disabled span {
-        color: #9CA3AF;
-        background-color: #F3F4F6;
-        border-color: #E5E7EB;
-    }
-
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-</style>
-
 <div class="container mx-auto px-4 py-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
         <div>
@@ -248,6 +199,55 @@
         </div>
     </div>
 </div>
+
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+    
+    .pagination li {
+        margin: 0 2px;
+    }
+    
+    .pagination li a,
+    .pagination li span {
+        display: inline-block;
+        padding: 8px 12px;
+        border: 1px solid #e4e6ee;
+        border-radius: 6px;
+        color: #4B5563;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination li a:hover {
+        background-color: #e8e4fb;
+        border-color: #716bf0;
+        color: #716bf0;
+    }
+    
+    .pagination li.active span {
+        background-color: #716bf0;
+        border-color: #716bf0;
+        color: white;
+    }
+    
+    .pagination li.disabled span {
+        color: #9CA3AF;
+        background-color: #F3F4F6;
+        border-color: #E5E7EB;
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
