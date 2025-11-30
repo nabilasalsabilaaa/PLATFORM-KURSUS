@@ -17,7 +17,7 @@ class UserController extends Controller
         if (Auth::user()->role !== 'admin') {
             abort(403);
         }
-        $users = User::orderBy('name')->paginate(10);
+        $users = User::orderBy('id')->paginate(10);
         return view('users.index', compact('users'));
     }
 
