@@ -200,7 +200,6 @@
     @endguest
 </div>
 
-
 <style>
     .pagination {
         display: flex;

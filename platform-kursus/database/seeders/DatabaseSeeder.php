@@ -130,7 +130,7 @@ class DatabaseSeeder extends Seeder
                     'title'       => 'Statistika Dasar untuk Data Science',
                     'description' => 'Materi dasar statistika yang sering dipakai di data science',
                     'teacher'     => $teacher1,
-                    'status'      => 'inactive',
+                    'status'      => 'active',
                     'slug'        => 'statistika-data-science',
                 ],
             ],

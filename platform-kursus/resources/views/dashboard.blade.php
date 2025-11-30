@@ -37,6 +37,15 @@
                             <p class="text-sm text-gray-600">Atur akun Anda</p>
                         </div>
                     </a>
+                    <a href="{{ route('courses.index') }}" class="flex items-center p-4 border border-neutral-100 rounded-lg hover:bg-purple-50 transition duration-300">
+                        <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800">Courses</h3>
+                            <p class="text-sm text-gray-600">Lihat semua kursus</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

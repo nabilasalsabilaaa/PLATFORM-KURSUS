@@ -39,6 +39,58 @@
             }
         }
     </script>
+
+    
+    <style>
+        .nav-link {
+            position: relative;
+            padding: 4px 8px;      
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 0.82rem;       
+            white-space: nowrap;      
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #716bf0;
+        }
+        
+        .nav-link.active {
+            color: #716bf0;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 12px 0;
+            color: #4B5563;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            border-bottom: 1px solid #e4e6ee;
+        }
+        
+        .mobile-nav-link:hover {
+            color: #716bf0;
+        }
+        
+        .mobile-nav-link.active {
+            color: #716bf0;
+            border-bottom: 3px solid #716bf0;
+        }
+        
+        .mobile-nav-link:last-child {
+            border-bottom: none;
+        }
+
+        #active-indicator {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left;
+        }
+    </style>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans bg-primary-50 text-gray-900 min-h-screen">
@@ -236,57 +288,6 @@
             @yield('content')
         </main>
     </div>
-
-    <style>
-        .nav-link {
-            position: relative;
-            padding: 4px 8px;      
-            color: #4B5563;
-            font-weight: 500;
-            font-size: 0.82rem;       
-            white-space: nowrap;      
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #716bf0;
-        }
-        
-        .nav-link.active {
-            color: #716bf0;
-        }
-
-        .mobile-nav-link {
-            display: block;
-            padding: 12px 0;
-            color: #4B5563;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            border-bottom: 1px solid #e4e6ee;
-        }
-        
-        .mobile-nav-link:hover {
-            color: #716bf0;
-        }
-        
-        .mobile-nav-link.active {
-            color: #716bf0;
-            border-bottom: 3px solid #716bf0;
-        }
-        
-        .mobile-nav-link:last-child {
-            border-bottom: none;
-        }
-
-        #active-indicator {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: left;
-        }
-    </style>
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
