@@ -8,7 +8,7 @@
             <h2 class="text-2xl font-bold text-gray-800">{{ __('Create Course') }}</h2>
             <p class="text-gray-600 mt-1">Create a new course to share your knowledge</p>
         </div>
-        <a href="{{ route('courses.catalog') }}" 
+        <a href="{{ route('courses.index') }}" 
             class="inline-flex items-center text-primary-500 hover:text-primary-600 transition duration-300">
             <i class="fas fa-arrow-left mr-2"></i> Back to Courses
         </a>

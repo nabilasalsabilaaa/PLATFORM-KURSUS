@@ -54,7 +54,8 @@ class CourseController extends Controller
             $teachers = User::where('role', 'teacher')->orderBy('name')->get();
         }
 
-        return view('courses.create', compact('user', 'teachers'));
+        $categories = Category::orderBy('name')->get();
+        return view('courses.create', compact('user', 'teachers', 'categories'));
     }
 
     /**
