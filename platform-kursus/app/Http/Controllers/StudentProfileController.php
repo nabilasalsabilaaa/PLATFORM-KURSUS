@@ -13,6 +13,7 @@ class StudentProfileController extends Controller
      */
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->role !== 'student') {

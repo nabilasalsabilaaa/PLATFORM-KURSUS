@@ -37,6 +37,7 @@ class PublicCourseController extends Controller
         $courseProgress    = [];
 
         if (Auth::check() && Auth::user()->role === 'student') {
+            /** @var \App\Models\User $student */
             $student = Auth::user();
 
             $enrolledCourseIds = $student->enrolledCourses()
@@ -102,6 +103,7 @@ class PublicCourseController extends Controller
         $userReview     = null;
 
         if ($isStudent) {
+            /** @var \App\Models\User $user */
             $isEnrolled = $user->enrolledCourses()
                 ->where('course_id', $course->id)
                 ->exists();
